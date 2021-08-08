@@ -72,6 +72,8 @@ class ChainedElement(Device):
 
 
 if __name__ == '__main__':
+    app = connect("127.0.0.1:5555")
+    app.run("com.android.chrome","org.chromium.chrome.browser.ChromeTabbedActivity")
 
     pass
     # app = connect("127.0.0.1:5555")
@@ -99,7 +101,7 @@ if __name__ == '__main__':
     # print(x.get_package())
     # print(x.activity())
     # 	android.widget.TextView
-    print("===>",x.elements_by_class("android.widget.TextView"))
+    # print("===>",x.element_by_id("android4.widget.TextView"))
     # x.element_by_coord(x=418,y=188).click()
     # x.element_by_text("忘记密码").click()
     # x.element_by_text("如何领取学生号?").click()
@@ -107,8 +109,8 @@ if __name__ == '__main__':
     #
     #
     # print(x)
-    # c = ChainedElement(devices='emulator-5554')
-    # print(c.setUp(text="学生号登录").Click().setUp(text="如何领取学生号?").Click())
+    c = ChainedElement(devices='emulator-5554')
+    c.setUp(text="学生号登录").Click().setUp(text="如何领取学生号?").Click()
 
     # import xml.etree.cElementTree as ET
     import xml.etree

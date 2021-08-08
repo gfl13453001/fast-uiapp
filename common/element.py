@@ -19,8 +19,9 @@ import lxml
 # rst = html.xpath('//a')
 # rst = html.xpath('//a[contains(text(),"France")]')
 # from main import Session
-from common._exception import TextElementException
-
+from common._exception import (
+    TextElementException, IDElementException, ClassElementException, CoordElementException
+)
 try:
     import xml.etree.cElementTree as ET
 except ImportError:
@@ -173,7 +174,7 @@ class ElementBase(_InitBase):
         # 418.0 188.0
         ele = x,y
         if ele is None:
-            raise TextElementException(msg="元素无法定位到")
+            raise CoordElementException(msg="元素无法定位到")
         return Event(devices=self.devices,el=tuple(ele))
 
 
@@ -182,8 +183,9 @@ class ElementBase(_InitBase):
             attrib="resource-id", name=id
         )
         if ele is None:
-            raise TextElementException(msg="元素无法定位到")
-        return ele
+            raise IDElementException(msg="元素无法定位到")
+        else:
+            return Event(devices=self.devices,el=tuple(ele),text=self.text)
 
 
     def element_by_class(self,classname):
@@ -191,8 +193,9 @@ class ElementBase(_InitBase):
             attrib="class", name=classname
         )
         if ele is None:
-            print("没有定位到")
-        return ele
+            raise ClassElementException(msg="元素无法定位到")
+        else:
+            return Event(devices=self.devices,el=tuple(ele),text=self.text)
 
     def elements_by_text(self,text):
         ele = self._elements(
@@ -216,7 +219,7 @@ class ElementBase(_InitBase):
             Event(devices=self.devices,el=tuple(x[0]),text=x[1]["text"])
         ) for x in ele]
         if ele is None:
-            raise TextElementException(msg="元素无法定位到")
+            raise ClassElementException(msg="元素无法定位到")
         else:
             return ele_object_list
 

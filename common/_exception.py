@@ -36,3 +36,30 @@ class TextElementException(ElementLocalizationException):
 
 
 
+class IDElementException(ElementLocalizationException):
+    """
+
+    """
+    def __init__(self, msg):
+        ElementLocalizationException.__init__(self, msg)
+
+
+class ClassElementException(ElementLocalizationException):
+    """
+
+    """
+    def __init__(self, msg):
+        ElementLocalizationException.__init__(self, msg)
+
+
+
+
+class CoordElementException(ElementLocalizationException):
+    """
+
+    """
+    def __init__(self, msg):
+        ElementLocalizationException.__init__(self, msg)
+
+
+
