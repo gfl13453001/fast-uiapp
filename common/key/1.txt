@@ -1,0 +1,198 @@
+Total number of currently running services:0
+WINDOW MANAGER WINDOWS (dumpsys window windows)
+  Window #5 Window{aadb83a u0 StatusBar}:
+    mDisplayId=0 stackId=0 mSession=Session{8d492a2 1923:u0a10014} mClient=android.os.BinderProxy@9089365
+    mOwnerUid=10014 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs=WM.LayoutParams{(0,0)(fillx36) gr=#30 sim=#10 ty=2000 fl=#81840048 fmt=-3 vsysui=0x600}
+    Requested w=720 h=36 mLayoutSeq=122
+    mBaseLayer=161000 mSubLayer=0 mAnimLayer=161000+0=161000 mLastLayer=161000
+    mToken=WindowToken{79094d null}
+    mRootToken=WindowToken{79094d null}
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mSeq=0 mSystemUiVisibility=0x600
+    mPolicyVisibility=false mPolicyVisibilityAfterAnim=false mAppOpVisibility=true mAttachedHidden=false
+ mPermanentlyHidden=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mMergedConfiguration={1.0 460mcc?mnc [zh_CN_#Hans,zh_CN] ldltr sw480dp w480dp h829dp 240dpi lrg long port finger -keyb/v/h -nav/h s.5}
+    mHasSurface=true mShownPosition=[0,0] isReadyForDisplay()=false hasSavedSurface()=false mWindowRemovalAllowed=false
+    mFrame=[0,0][720,36] last=[0,0][720,36]
+    Frames: containing=[0,0][720,1280] parent=[0,0][720,1280]
+        display=[0,0][720,1280] overscan=[0,0][720,1280]
+        content=[0,0][720,36] visible=[0,0][720,36]
+        decor=[0,0][0,0]
+        outset=[0,0][720,1280]
+    Cur insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,0][0,0] surface=[0,0][0,0] outsets=[0,0][0,0]
+    Lst insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,0][0,0] physical=[0,0][0,0] outset=[0,0][0,0]
+    WindowStateAnimator{2ec9c02 StatusBar}:
+      mAnimating=false mLocalAnimating=false mAnimationIsEntrance=true mAnimation=null mStackClip=1
+      mSurface=Surface(name=StatusBar)
+      Surface: shown=false layer=161000 alpha=1.0 rect=(0.0,0.0) 720.0 x 36.0
+      mDrawState=HAS_DRAWN       mLastHidden=true
+      mSystemDecorRect=[0,0][720,36] last=[0,0][0,0] mHasClipRect=false mLastClipRect=[0,0][720,36]
+  Window #4 Window{89de5cf u0 KeyguardScrim}:
+    mDisplayId=0 stackId=0 mSession=Session{1026c30 1817:1000} mClient=android.view.ViewRootImpl$W@45a1b5c
+    mOwnerUid=1000 mShowToOwnerOnly=false package=android appop=NONE
+    mAttrs=WM.LayoutParams{(0,0)(fillxfill) sim=#10 ty=2029 fl=#1110900 pfl=0x1 fmt=-3 or=5 vsysui=0x3610000}
+    Requested w=720 h=1244 mLayoutSeq=34
+    mBaseLayer=141000 mSubLayer=0 mAnimLayer=141000+0=141000 mLastLayer=141000
+    mToken=WindowToken{79094d null}
+    mRootToken=WindowToken{79094d null}
+    mViewVisibility=0x8 mHaveFrame=true mObscured=false
+    mSeq=0 mSystemUiVisibility=0x3610000
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mMergedConfiguration={1.0 460mcc?mnc [zh_CN_#Hans,zh_CN] ldltr sw480dp w480dp h829dp 240dpi lrg long port finger -keyb/v/h -nav/h s.5}
+    mHasSurface=false mShownPosition=[0,0] isReadyForDisplay()=false hasSavedSurface()=false mWindowRemovalAllowed=false
+    mFrame=[0,0][720,1280] last=[0,0][720,1280]
+    Frames: containing=[0,0][720,1280] parent=[0,0][720,1280]
+        display=[0,0][720,1280] overscan=[0,0][720,1280]
+        content=[0,0][720,1280] visible=[0,0][720,1280]
+        decor=[0,0][720,1280]
+        outset=[0,0][0,0]
+    Cur insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,36][0,0] surface=[0,0][0,0] outsets=[0,0][0,0]
+    Lst insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,0][0,0] physical=[0,0][0,0] outset=[0,0][0,0]
+    WindowStateAnimator{1d33913 KeyguardScrim}:
+      mDrawState=NO_SURFACE       mLastHidden=true
+      mSystemDecorRect=[0,0][720,1280] last=[0,0][0,0] mHasClipRect=false mLastClipRect=[0,0][720,1280]
+    mLastFreezeDuration=+40s817ms
+  Window #3 Window{9936550 u0 DockedStackDivider}:
+    mDisplayId=0 stackId=0 mSession=Session{8d492a2 1923:u0a10014} mClient=android.os.BinderProxy@86f0f13
+    mOwnerUid=10014 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs=WM.LayoutParams{(0,0)(fillx72) sim=#20 ty=2034 fl=#21840028 pfl=0x40 fmt=-3 vsysui=0x700}
+    Requested w=720 h=72 mLayoutSeq=122
+    mBaseLayer=21000 mSubLayer=0 mAnimLayer=21015+0=21015 mLastLayer=0
+    mToken=WindowToken{79094d null}
+    mRootToken=WindowToken{79094d null}
+    mViewVisibility=0x4 mHaveFrame=true mObscured=false
+    mSeq=0 mSystemUiVisibility=0x700
+    mPolicyVisibility=false mPolicyVisibilityAfterAnim=false mAppOpVisibility=true mAttachedHidden=false
+ mPermanentlyHidden=false
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mTouchableInsets=3 mGivenInsetsPending=false
+    touchable region=SkRegion((-72,0,72,72))
+    mMergedConfiguration={1.0 460mcc?mnc ?localeList ?layoutDir ?swdp ?wdp ?hdp ?density ?lsize ?long ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/?}
+    mHasSurface=false mShownPosition=[0,0] isReadyForDisplay()=false hasSavedSurface()=false mWindowRemovalAllowed=false
+    mFrame=[0,0][0,0] last=[0,0][0,0]
+    Frames: containing=[0,0][720,1280] parent=[0,0][720,1280]
+        display=[0,0][720,1280] overscan=[0,0][720,1280]
+        content=[0,0][0,0] visible=[0,0][720,1280]
+        decor=[0,0][720,1280]
+        outset=[0,0][0,0]
+    Cur insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,36][0,0] surface=[0,0][0,0] outsets=[0,0][0,0]
+    Lst insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,0][0,0] physical=[0,0][0,0] outset=[0,0][0,0]
+    WindowStateAnimator{a054750 DockedStackDivider}:
+      mDrawState=NO_SURFACE       mLastHidden=false
+      mSystemDecorRect=[0,0][0,0] last=[0,0][0,0] mHasClipRect=false mLastClipRect=[0,0][0,0]
+      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0
+  Window #2 Window{56c9439 u0 com.android.packageinstaller/com.android.packageinstaller.permission.ui.GrantPermissionsActivity}:
+    mDisplayId=0 stackId=1 mSession=Session{c5d7559 6091:u0a10013} mClient=android.os.BinderProxy@78f7400
+    mOwnerUid=10013 mShowToOwnerOnly=true package=com.android.packageinstaller appop=NONE
+    mAttrs=WM.LayoutParams{(0,0)(wrapxwrap) sim=#120 ty=1 fl=#1800002 fmt=-2 wanim=0x103046b surfaceInsets=Rect(48, 48 - 48, 48) needsMenuKey=2}
+    Requested w=480 h=1244 mLayoutSeq=122
+    mBaseLayer=21000 mSubLayer=0 mAnimLayer=21010+0=21010 mLastLayer=21010
+    mToken=AppWindowToken{5cc46e7 token=Token{a14aca6 ActivityRecord{9122601 u0 com.android.packageinstaller/.permission.ui.GrantPermissionsActivity t14}}}
+    mRootToken=AppWindowToken{5cc46e7 token=Token{a14aca6 ActivityRecord{9122601 u0 com.android.packageinstaller/.permission.ui.GrantPermissionsActivity t14}}}
+    mAppToken=AppWindowToken{5cc46e7 token=Token{a14aca6 ActivityRecord{9122601 u0 com.android.packageinstaller/.permission.ui.GrantPermissionsActivity t14}}}
+     isAnimatingWithSavedSurface()=false mAppDied=false
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mSeq=0 mSystemUiVisibility=0x0
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mMergedConfiguration={1.0 460mcc?mnc [zh_CN_#Hans,zh_CN] ldltr sw480dp w480dp h829dp 240dpi lrg long port finger -keyb/v/h -nav/h s.5}
+    mHasSurface=true mShownPosition=[120,18] isReadyForDisplay()=true hasSavedSurface()=false mWindowRemovalAllowed=false
+    mFrame=[120,18][600,1262] last=[120,18][600,1262]
+    Frames: containing=[0,0][720,1280] parent=[0,0][720,1280]
+        display=[0,0][720,1280] overscan=[0,0][720,1280]
+        content=[120,18][600,1262] visible=[120,18][600,1262]
+        decor=[0,36][720,1280]
+        outset=[0,0][0,0]
+    Cur insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,18][0,0] surface=[48,48][48,48] outsets=[0,0][0,0]
+    Lst insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,18][0,0] physical=[0,0][0,0] outset=[0,0][0,0]
+    WindowStateAnimator{7d9ed49 com.android.packageinstaller/com.android.packageinstaller.permission.ui.GrantPermissionsActivity}:
+      mAnimating=false mLocalAnimating=false mAnimationIsEntrance=true mAnimation=null mStackClip=1
+      mSurface=Surface(name=com.android.packageinstaller/com.android.packageinstaller.permission.ui.GrantPermissionsActivity)
+      Surface: shown=true layer=21010 alpha=1.0 rect=(72.0,-30.0) 576.0 x 1340.0
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mSystemDecorRect=[0,0][480,1244] last=[0,0][0,0] mHasClipRect=false mLastClipRect=[0,30][576,1310]
+  Window #1 Window{e3c0771 u0 com.iflytek.elpmobile.smartlearning/com.iflytek.elpmobile.smartlearning.ui.SplashActivity}:
+    mDisplayId=0 stackId=1 mSession=Session{aad1df 3086:u0a10060} mClient=android.os.BinderProxy@3a45118
+    mOwnerUid=10060 mShowToOwnerOnly=true package=com.iflytek.elpmobile.smartlearning appop=NONE
+    mAttrs=WM.LayoutParams{(0,0)(fillxfill) sim=#120 ty=1 fl=#1810500 pfl=0x20000 wanim=0x7f0f000b vsysui=0x400 needsMenuKey=2}
+    Requested w=720 h=1244 mLayoutSeq=122
+    mBaseLayer=21000 mSubLayer=0 mAnimLayer=21005+0=21005 mLastLayer=21005
+    mToken=AppWindowToken{cd3cd13 token=Token{a1a7d4d ActivityRecord{c95c4e4 u0 com.iflytek.elpmobile.smartlearning/.ui.SplashActivity t14}}}
+    mRootToken=AppWindowToken{cd3cd13 token=Token{a1a7d4d ActivityRecord{c95c4e4 u0 com.iflytek.elpmobile.smartlearning/.ui.SplashActivity t14}}}
+    mAppToken=AppWindowToken{cd3cd13 token=Token{a1a7d4d ActivityRecord{c95c4e4 u0 com.iflytek.elpmobile.smartlearning/.ui.SplashActivity t14}}}
+     isAnimatingWithSavedSurface()=false mAppDied=false
+    mViewVisibility=0x0 mHaveFrame=true mObscured=false
+    mSeq=0 mSystemUiVisibility=0x400
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mMergedConfiguration={1.0 460mcc?mnc [zh_CN_#Hans,zh_CN] ldltr sw480dp w480dp h829dp 240dpi lrg long port finger -keyb/v/h -nav/h s.5}
+    mHasSurface=true mShownPosition=[0,0] isReadyForDisplay()=true hasSavedSurface()=false mWindowRemovalAllowed=false
+    mFrame=[0,0][720,1280] last=[0,0][720,1280]
+    Frames: containing=[0,0][720,1280] parent=[0,0][720,1280]
+        display=[0,0][720,1280] overscan=[0,0][720,1280]
+        content=[0,0][720,1280] visible=[0,0][720,1280]
+        decor=[0,0][720,1280]
+        outset=[0,0][720,1280]
+    Cur insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,36][0,0] surface=[0,0][0,0] outsets=[0,0][0,0]
+    Lst insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,36][0,0] physical=[0,0][0,0] outset=[0,0][0,0]
+    WindowStateAnimator{d8c764e com.iflytek.elpmobile.smartlearning/com.iflytek.elpmobile.smartlearning.ui.SplashActivity}:
+      mSurface=Surface(name=com.iflytek.elpmobile.smartlearning/com.iflytek.elpmobile.smartlearning.ui.SplashActivity)
+      Surface: shown=true layer=21005 alpha=1.0 rect=(0.0,0.0) 720.0 x 1280.0
+      mDrawState=HAS_DRAWN       mLastHidden=false
+      mSystemDecorRect=[0,0][720,1280] last=[0,0][0,0] mHasClipRect=false mLastClipRect=[0,0][720,1280]
+  Window #0 Window{b85bb43 u0 com.bluestacks.settings/com.bluestacks.settings.SettingsActivity}:
+    mDisplayId=0 stackId=1 mSession=Session{a320854 2423:u0a10024} mClient=android.os.BinderProxy@88c08f2
+    mOwnerUid=10024 mShowToOwnerOnly=true package=com.bluestacks.settings appop=NONE
+    mAttrs=WM.LayoutParams{(0,0)(fillxfill) sim=#120 ty=1 fl=#81810100 pfl=0x20000 wanim=0x103046a vsysui=0x600 needsMenuKey=2}
+    Requested w=0 h=0 mLayoutSeq=29
+    mBaseLayer=21000 mSubLayer=0 mAnimLayer=21000+0=21000 mLastLayer=0
+    mToken=AppWindowToken{d15e9da token=Token{4d8b4fc ActivityRecord{63661ef u0 com.bluestacks.settings/.SettingsActivity t13}}}
+    mRootToken=AppWindowToken{d15e9da token=Token{4d8b4fc ActivityRecord{63661ef u0 com.bluestacks.settings/.SettingsActivity t13}}}
+    mAppToken=AppWindowToken{d15e9da token=Token{4d8b4fc ActivityRecord{63661ef u0 com.bluestacks.settings/.SettingsActivity t13}}}
+     isAnimatingWithSavedSurface()=false mAppDied=false
+    mViewVisibility=0x8 mHaveFrame=true mObscured=true
+    mSeq=0 mSystemUiVisibility=0x600
+    mGivenContentInsets=[0,0][0,0] mGivenVisibleInsets=[0,0][0,0]
+    mMergedConfiguration={1.0 460mcc?mnc ?localeList ?layoutDir ?swdp ?wdp ?hdp ?density ?lsize ?long ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/?}
+    mHasSurface=false mShownPosition=[0,0] isReadyForDisplay()=false hasSavedSurface()=false mWindowRemovalAllowed=false
+    mFrame=[0,0][720,1280] last=[0,0][0,0]
+    Frames: containing=[0,0][720,1280] parent=[0,0][720,1280]
+        display=[0,0][720,1280] overscan=[0,0][720,1280]
+        content=[0,0][720,1280] visible=[0,0][720,1280]
+        decor=[0,0][720,1280]
+        outset=[0,0][0,0]
+    Cur insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,0][0,0] surface=[0,0][0,0] outsets=[0,0][0,0]
+    Lst insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,0][0,0] physical=[0,0][0,0] outset=[0,0][0,0]
+    WindowStateAnimator{f2e536f com.bluestacks.settings/com.bluestacks.settings.SettingsActivity}:
+      mDrawState=NO_SURFACE       mLastHidden=false
+      mSystemDecorRect=[0,0][0,0] last=[0,0][0,0] mHasClipRect=false mLastClipRect=[0,0][0,0]
+      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0
+
+  mCurConfiguration={1.0 460mcc?mnc [zh_CN_#Hans,zh_CN] ldltr sw480dp w480dp h829dp 240dpi lrg long port finger -keyb/v/h -nav/h s.5}
+  mHasPermanentDpad=false
+  mCurrentFocus=Window{56c9439 u0 com.android.packageinstaller/com.android.packageinstaller.permission.ui.GrantPermissionsActivity}
+  mFocusedApp=AppWindowToken{5cc46e7 token=Token{a14aca6 ActivityRecord{9122601 u0 com.android.packageinstaller/.permission.ui.GrantPermissionsActivity t14}}}
+  mInTouchMode=true mLayoutSeq=122
+  mLastDisplayFreezeDuration=0 due to Window{4293063 u0 com.bluestacks.appmart/com.bluestacks.appmart.MarketPageGrid}
+  mLastWakeLockHoldingWindow=null mLastWakeLockObscuringWindow=Window{e3c0771 u0 com.iflytek.elpmobile.smartlearning/com.iflytek.elpmobile.smartlearning.ui.SplashActivity}
+  mSystemDecorLayer=0 mScreenRect=[0,0][720,1280]
+  mLastStatusBarVisibility=0x8
+  mTraversalScheduled=false
+  mHoldScreenWindow=null
+  mObsuringWindow=Window{e3c0771 u0 com.iflytek.elpmobile.smartlearning/com.iflytek.elpmobile.smartlearning.ui.SplashActivity}
+  mWallpaperTarget=null
+  mLastWallpaperX=-1.0 mLastWallpaperY=-1.0
+  mSystemBooted=true mDisplayEnabled=true
+  mTransactionSequence=168
+  mDisplayFrozen=false windows=0 client=false apps=0 waitingForConfig=false
+  mRotation=0 mAltOrientation=false
+  mLastWindowForcedOrientation=-1 mLastOrientation=1
+  mDeferredRotationPauseCount=0
+  Animation settings: disabled=false window=0.5 transition=0.5 animator=0.5
+ mSkipAppTransitionAnimation=false
+  mLayoutToAnim:
+    mNextAppTransition=TRANSIT_UNSET
+    mAppTransitionState=APP_STATE_IDLE
+    mLastUsedAppTransition=TRANSIT_ACTIVITY_OPEN
+    mLastOpeningApp=AppWindowToken{5cc46e7 token=Token{a14aca6 ActivityRecord{9122601 u0 com.android.packageinstaller/.permission.ui.GrantPermissionsActivity t14}}}
+    mLastClosingApp=AppWindowToken{f96f52b token=Token{c27d97a ActivityRecord{1fd71a5 u0 com.android.packageinstaller/.permission.ui.GrantPermissionsActivity t14}}}

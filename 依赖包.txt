@@ -1,0 +1,5 @@
+tornado 6.1
+requests
+six
+logzero
+pillow 8.3.1
