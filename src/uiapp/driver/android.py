@@ -140,6 +140,22 @@ class _AdbActivity(_InitBase):
         super(_AdbActivity, self).__init__(devices,driver=driver)
 
 
+    def port(self,port=8066):
+        """
+        修改ip
+        :param port:
+        :return:
+        """
+        self.install_shell = None
+        if self.device is None:
+            self.install_shell = f"{self.adb_path} -s {self.device} tcpip {port}"
+        else:
+            self.install_shell = f"{self.adb_path}  tcpip -{port}"
+
+        return subprocess.Popen(self.install_shell).communicate()[0]
+
+
+
     def install(self,app_path):
         """
         -l ：锁定应用程序

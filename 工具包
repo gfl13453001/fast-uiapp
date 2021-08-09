@@ -1,0 +1,10 @@
+pip show pyyaml
+Name: PyYAML
+Version: 5.3.1
+
+
+OCR
+pip show easyocr
+Name: easyocr
+Version: x
+

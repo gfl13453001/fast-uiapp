@@ -11,6 +11,3 @@ __all__ = [
 ]
 
 
-from common.element import ElementBase,Event
-from common._exception import TextElementException
-

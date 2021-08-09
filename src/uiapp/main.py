@@ -6,8 +6,8 @@
 
 import time
 
-from common.element import ElementBase
-from driver.android import _AdbActivity
+from src.uiapp.common.element import ElementBase
+from src.uiapp.driver.android import _AdbActivity
 
 
 class Device(_AdbActivity, ElementBase):
@@ -72,10 +72,10 @@ class ChainedElement(Device):
 
 
 if __name__ == '__main__':
-    app = connect("127.0.0.1:5555")
-    app.run("com.android.chrome","org.chromium.chrome.browser.ChromeTabbedActivity")
-
-    pass
+    # app = connect("127.0.0.1:5555")
+    # app.run("com.android.chrome","org.chromium.chrome.browser.ChromeTabbedActivity")
+    #
+    # pass
     # app = connect("127.0.0.1:5555")
     # app.run("com.android.chrome","org.chromium.chrome.browser.ChromeTabbedActivity")
     # adb logcat | findstr START
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     # print(x)
     # app.element_by_text("ATX")
     # x = Session(devices="127.0.0.1:5555")
-    x = start()
+    # x = start()
     # print(x)
     # x.install(r'P:\demo\uiapp\common\key\ADBKeyboard.apk').r()
     # print(x.package_info())
@@ -109,11 +109,11 @@ if __name__ == '__main__':
     #
     #
     # print(x)
-    c = ChainedElement(devices='emulator-5554')
-    c.setUp(text="学生号登录").Click().setUp(text="如何领取学生号?").Click()
+    c = ChainedElement(devices='192.168.19.148:8888')
+    c.setUp(text="相机").Click()
 
     # import xml.etree.cElementTree as ET
-    import xml.etree
+    # import xml.etree
 
     # root = xml.etree.cElementTree.ElementTree(file=)
     # print(root.parse())

@@ -3,14 +3,8 @@
 
 # authors:guanfl
 # 2021/8/5
-import base64
 import re
 import subprocess
-import tempfile
-import time
-
-import lxml
-
 
 # 2.  lxml  解析然后xpath 获取文本属性失败（代码未列出，可参考上面的）， 然后又根据text属性定位，发现找到不。
 # from lxml import etree
@@ -19,7 +13,7 @@ import lxml
 # rst = html.xpath('//a')
 # rst = html.xpath('//a[contains(text(),"France")]')
 # from main import Session
-from common._exception import (
+from src.uiapp.common._exception import (
     TextElementException, IDElementException, ClassElementException, CoordElementException
 )
 try:
@@ -27,7 +21,7 @@ try:
 except ImportError:
     import xml.etree.ElementTree as ET
 
-from driver.android import _InitBase
+from src.uiapp.driver.android import _InitBase
 
 
 class UiInit(_InitBase):
@@ -342,7 +336,6 @@ if __name__ == '__main__':
     # print(e.text)
     # ex = Event()
     # ex.touch(p[0],p[1])
-    import os
     #
 
     # value = '小夜晚了  1'
