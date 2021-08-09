@@ -5,9 +5,6 @@
 # 2021/8/5
 name = "uiapp"
 
-__all__ = [
-    "ElementBase","Event",
-    "TextElementException"
-]
+
 
 
