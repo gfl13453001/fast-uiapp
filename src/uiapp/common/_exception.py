@@ -9,7 +9,7 @@
 
 class ElementLocalizationException(Exception):
     """
-    Base webdriver exception.
+    Base element exception.
     """
 
     def __init__(self, msg=None, screen=None, stacktrace=None):
@@ -29,7 +29,7 @@ class ElementLocalizationException(Exception):
 
 class TextElementException(ElementLocalizationException):
     """
-
+    text 定位异常
     """
     def __init__(self, msg):
         ElementLocalizationException.__init__(self, msg)
@@ -38,7 +38,7 @@ class TextElementException(ElementLocalizationException):
 
 class IDElementException(ElementLocalizationException):
     """
-
+    id定位异常
     """
     def __init__(self, msg):
         ElementLocalizationException.__init__(self, msg)
@@ -46,7 +46,7 @@ class IDElementException(ElementLocalizationException):
 
 class ClassElementException(ElementLocalizationException):
     """
-
+    class定位异常
     """
     def __init__(self, msg):
         ElementLocalizationException.__init__(self, msg)
@@ -56,7 +56,7 @@ class ClassElementException(ElementLocalizationException):
 
 class CoordElementException(ElementLocalizationException):
     """
-
+    坐标定位异常
     """
     def __init__(self, msg):
         ElementLocalizationException.__init__(self, msg)

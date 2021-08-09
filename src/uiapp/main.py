@@ -7,10 +7,10 @@
 import time
 
 from src.uiapp.common.element import ElementBase
-from src.uiapp.driver.android import _AdbActivity
+from src.uiapp.driver.android import _AdbActivity, Devices
 
 
-class Device(_AdbActivity, ElementBase):
+class Device(_AdbActivity, ElementBase,Devices):
     """Device object"""
 
 
@@ -27,7 +27,6 @@ def connect(addr) -> Device:
     Device(devices=addr)._connect(ip=addr)
 
     return Device(devices=addr)
-
 
 def start():
     return Device(devices=None)
@@ -89,7 +88,8 @@ if __name__ == '__main__':
     # output = ps.communicate()[0]
     # #
     # print(output)
-
+    x = start().screen(r"F:\uiapp\src")
+    print(x)
     # x = subprocess.Popen(f"adb logcat | findstr START", stdout=subprocess.PIPE, shell=True).communicate()[0]
     # print(x)
     # app.element_by_text("ATX")
@@ -109,8 +109,8 @@ if __name__ == '__main__':
     #
     #
     # print(x)
-    c = ChainedElement(devices='192.168.19.148:8888')
-    c.setUp(text="相机").Click()
+    # c = ChainedElement(devices='192.168.19.148:8888')
+    # c
 
     # import xml.etree.cElementTree as ET
     # import xml.etree

@@ -35,14 +35,14 @@ from tornado.concurrent import run_on_executor
 from tornado.escape import json_encode
 from tornado.log import enable_pretty_logging
 
-from core.weditor.web.handlers.page import (
+from src.uiapp.core.weditor.web.handlers.page import (
     BaseHandler, DeviceConnectHandler,
     DeviceHierarchyHandler, DeviceHierarchyHandlerV2, DeviceScreenshotHandler,
     DeviceWidgetListHandler, MainHandler, VersionHandler, WidgetPreviewHandler)
-from core.weditor.web.handlers.proxy import StaticProxyHandler
-from core.weditor.web.handlers.shell import PythonShellHandler
-from core.weditor.web.utils import current_ip, tostr
-from core.weditor.web.version import __version__
+from src.uiapp.core.weditor.web.handlers.proxy import StaticProxyHandler
+from src.uiapp.core.weditor.web.handlers.shell import PythonShellHandler
+from src.uiapp.core.weditor.web.utils import current_ip, tostr
+from src.uiapp.core.weditor.web.version import __version__
 
 enable_pretty_logging()
 

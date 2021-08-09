@@ -122,15 +122,144 @@ class Devices(_InitBase):
         设备尺寸大小
         :return:
         """
-        x = "shell wm size"
         get_content = None
 
-        xt = subprocess.Popen(rf"{self.adb_path} -s {self.device} {x}", stdout=subprocess.PIPE, shell=True)
+        if self.device is None:
+            size_shell = f"{self.adb_path}  shell wm size"
+        else:
+            size_shell = f"{self.adb_path} -s {self.device} shell wm size"
+
+        xt = subprocess.Popen(size_shell, stdout=subprocess.PIPE, shell=True)
         get_content = xt.stdout.read().decode()
 
         xts = get_content.replace("\r\n","")
         get_window_size = [x.replace(" ","").split("x") for x in xts.split(":")]
         return int(get_window_size[-1][0]),int(get_window_size[-1][1])
+
+    def set_size(self,x,y):
+        """
+        修改设备分辨率
+        :return:
+        """
+        size_shell = None
+
+        if self.device is None:
+            size_shell = f"{self.adb_path}  shell wm size {x}x{y}"
+        else:
+            size_shell = f"{self.adb_path} -s {self.device} shell wm size {x}x{y}"
+
+        xt = subprocess.Popen(size_shell, stdout=subprocess.PIPE, shell=True)
+        get_content = xt.stdout.read().decode()
+
+        xts = get_content.replace("\r\n","")
+        print(xts)
+        # get_window_size = [x.replace(" ","").split("x") for x in xts.split(":")]
+        # return int(get_window_size[-1][0]),int(get_window_size[-1][1])
+    #
+    # adb shell /system/bin/screencap -p /sdcard/screenshot.png
+    def screen(self,path):
+        size_shell = None
+
+        if self.device is None:
+            size_shell = f"{self.adb_path}  shell  /system/bin/screencap -p /sdcard/screenshot.png"
+            pull = f"{self.adb_path}    pull /sdcard/screenshot.png {path}"
+        else:
+            size_shell = f"{self.adb_path} -s {self.device} shell /system/bin/screencap -p /sdcard/screenshot.png"
+            pull = f"{self.adb_path}    pull /sdcard/screenshot.png {path}"
+
+        xt = subprocess.Popen(size_shell, stdout=subprocess.PIPE, shell=True)
+        xx = subprocess.Popen(pull, stdout=subprocess.PIPE, shell=True)
+        get_content = xt.stdout.read().decode()
+
+        xts = get_content.replace("\r\n", "")
+        print(xts)
+
+    def reset_size(self):
+        """
+        还原设备分辨率
+        :return:
+        """
+        get_content = None
+
+        if self.device is None:
+            size_shell = f"{self.adb_path}  shell wm size reset"
+        else:
+            size_shell = f"{self.adb_path} -s {self.device} shell wm size reset"
+
+        xt = subprocess.Popen(size_shell, stdout=subprocess.PIPE, shell=True)
+        get_content = xt.stdout.read().decode()
+
+        xts = get_content.replace("\r\n","")
+        print(xts)
+        # get_window_size = [x.replace(" ","").split("x") for x in xts.split(":")]
+        # return int(get_window_size[-1][0]),int(get_window_size[-1][1])
+
+    @property
+    def inputmethod(self):
+        adb_path = self.adb_path
+        device = self.device
+        class Settings:
+
+            def set_default(self):
+                """
+                设置系统默认的输入法 安卓 AOSP
+                :return:
+                """
+                k_shell = None
+                if device is None:
+                    k_shell = f"{adb_path} shell ime set com.android.inputmethod.latin/.LatinIME"
+                else:
+                    k_shell = f"{adb_path} -s {device} shell ime set com.android.inputmethod.latin/.LatinIME"
+
+                return subprocess.Popen(k_shell, stdout=subprocess.PIPE).communicate()[0]
+
+            def set(self,packagename):
+                """
+                设置指定的输入法
+                :return:
+                """
+                k_shell = None
+                if device is None:
+                    k_shell = f"{adb_path} shell ime set {packagename}"
+                else:
+                    k_shell = f"{adb_path} -s {device} shell ime set {packagename}"
+
+                return subprocess.Popen(k_shell, stdout=subprocess.PIPE).communicate()[0]
+
+            def get(self):
+                """
+                获取系统安装的输入法
+                :return:
+                """
+                k_shell = None
+                if device is None:
+                    k_shell = f"{adb_path} shell ime list -s"
+                else:
+                    k_shell = f"{adb_path} -s {device} shell ime set ime list -s"
+
+                info_list =  subprocess.Popen(k_shell, stdout=subprocess.PIPE).communicate()[0]
+                xl = info_list.decode()
+                obj_ime = xl.replace("\n","").split("\r")
+                return obj_ime[:-1]
+
+            def get_setting_default(self):
+                """
+                获取系统默认输入法
+                :return:
+                """
+                k_shell = None
+                if device is None:
+                    k_shell = f"{adb_path} shell settings get secure default_input_method"
+                else:
+                    k_shell = f"{adb_path} -s {device} shell settings get secure default_input_method"
+
+                info_list =  subprocess.Popen(k_shell, stdout=subprocess.PIPE).communicate()[0]
+                xl = info_list.decode()
+                obj_ime = xl.replace("\n","").split("\r")
+                return obj_ime[:-1]
+
+        return Settings()
+
 
 
 
