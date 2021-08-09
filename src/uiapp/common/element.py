@@ -276,14 +276,34 @@ class Event(_InitBase):
         触摸事件
         usage: touch(500, 500)
         """
+
         touch_event = f"{self.adb_path}  shell input tap {dx}  {dy}" if self.device is None else \
             f"{self.adb_path} -s {self.devices} shell input tap {dx}  {dy}"
+
+
+        subprocess.Popen(touch_event)
+        return Event._touch
+
+    def _swipe(self,startX,startY,endX,endY,timeToSwipe):
+        """
+        滑动
+        usage: touch(500, 500)
+        """
+        touch_event = f"{self.adb_path}  shell input swipe  {startX}  {startY} {endX} {endY} {timeToSwipe}" if self.device is None else \
+            f"{self.adb_path} -s {self.devices} shell input swipe  {startX}  {startY} {endX} {endY} {timeToSwipe}"
 
         print(self.devices)
         print(touch_event)
 
         subprocess.Popen(touch_event)
-        return self
+        return Event._touch
+
+    def slide(self,ex,ey,sx=None,sy=None,timeout=500):
+        if sx and sx is None:
+            self._swipe(startX=self.el[0], startY=self.el[1], endX=ex, endY=ey, timeToSwipe=timeout)
+        else:
+            self._swipe(startX=sx,startY=sy,endX=ex,endY=ey,timeToSwipe=timeout)
+        return Event.slide
 
     def click(self):
         self._touch(dx=self.el[0],dy=self.el[1])

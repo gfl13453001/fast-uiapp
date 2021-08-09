@@ -6,11 +6,11 @@
 
 import time
 
-from src.uiapp.common.element import ElementBase
+from src.uiapp.common.element import ElementBase,Event
 from src.uiapp.driver.android import _AdbActivity, Devices
 
 
-class Device(_AdbActivity, ElementBase,Devices):
+class Device(_AdbActivity,ElementBase,Devices,Event):
     """Device object"""
 
 
@@ -88,7 +88,8 @@ if __name__ == '__main__':
     # output = ps.communicate()[0]
     # #
     # print(output)
-    x = start().screen(r"F:\uiapp\src")
+    # x = start().screen(r"P:\demo\uiapp\src")
+    # x = start().element_by_text("工具")
     print(x)
     # x = subprocess.Popen(f"adb logcat | findstr START", stdout=subprocess.PIPE, shell=True).communicate()[0]
     # print(x)

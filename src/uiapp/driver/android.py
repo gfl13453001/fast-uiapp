@@ -162,6 +162,7 @@ class Devices(_InitBase):
 
         if self.device is None:
             size_shell = f"{self.adb_path}  shell  /system/bin/screencap -p /sdcard/screenshot.png"
+            print(size_shell)
             pull = f"{self.adb_path}    pull /sdcard/screenshot.png {path}"
         else:
             size_shell = f"{self.adb_path} -s {self.device} shell /system/bin/screencap -p /sdcard/screenshot.png"
