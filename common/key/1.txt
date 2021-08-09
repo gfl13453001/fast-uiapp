@@ -77,6 +77,7 @@ WINDOW MANAGER WINDOWS (dumpsys window windows)
         content=[0,0][0,0] visible=[0,0][720,1280]
         decor=[0,0][720,1280]
         outset=[0,0][0,0]
+
     Cur insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,36][0,0] surface=[0,0][0,0] outsets=[0,0][0,0]
     Lst insets: overscan=[0,0][0,0] content=[0,0][0,0] visible=[0,0][0,0] stable=[0,0][0,0] physical=[0,0][0,0] outset=[0,0][0,0]
     WindowStateAnimator{a054750 DockedStackDivider}:
