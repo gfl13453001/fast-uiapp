@@ -71,6 +71,7 @@ class ChainedElement(Device):
 
 
 if __name__ == '__main__':
+    pass
     # app = connect("127.0.0.1:5555")
     # app.run("com.android.chrome","org.chromium.chrome.browser.ChromeTabbedActivity")
     #
@@ -88,9 +89,10 @@ if __name__ == '__main__':
     # output = ps.communicate()[0]
     # #
     # print(output)
-    # x = start().screen(r"P:\demo\uiapp\src")
-    # x = start().element_by_text("工具")
+    # Tue Aug 10 18:34:04 GMT 2021
+    x = start().screen(path=r"F:\uiapp\src\uiapp",name="1.png")
     print(x)
+    # x = start().element_by_text("工具")
     # x = subprocess.Popen(f"adb logcat | findstr START", stdout=subprocess.PIPE, shell=True).communicate()[0]
     # print(x)
     # app.element_by_text("ATX")

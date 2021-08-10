@@ -157,13 +157,15 @@ class Devices(_InitBase):
         # return int(get_window_size[-1][0]),int(get_window_size[-1][1])
     #
     # adb shell /system/bin/screencap -p /sdcard/screenshot.png
-    def screen(self,path):
+    def screen(self,path,name):
         size_shell = None
+        file = "screenshot.png"
 
         if self.device is None:
-            size_shell = f"{self.adb_path}  shell  /system/bin/screencap -p /sdcard/screenshot.png"
-            print(size_shell)
-            pull = f"{self.adb_path}    pull /sdcard/screenshot.png {path}"
+
+            size_shell = f"{self.adb_path}  shell  /system/bin/screencap -p /sdcard/{file}"
+            pull = f"{self.adb_path}    pull /sdcard/{file} {path}"
+            re = os.rename(rf"{path}\{file}",rf"{path}\{name}")
         else:
             size_shell = f"{self.adb_path} -s {self.device} shell /system/bin/screencap -p /sdcard/screenshot.png"
             pull = f"{self.adb_path}    pull /sdcard/screenshot.png {path}"
@@ -174,6 +176,24 @@ class Devices(_InitBase):
 
         xts = get_content.replace("\r\n", "")
         print(xts)
+
+    # def record(self,path):
+    #     adb shell screenrecord /sdcard/demo.mp4 --time-limit 5
+    #     if self.device is None:
+    #         size_shell = f"{self.adb_path}  shell  screenrecord /sdcard/demo.mp4"
+    #         print(size_shell)
+    #         pull = f"{self.adb_path}    pull /sdcard/demo.mp4 {path}"
+    #     else:
+    #         size_shell = f"{self.adb_path} -s {self.device} shell   screenrecord /sdcard/demo.mp4"
+    #         pull = f"{self.adb_path}    pull /sdcard/demo.mp4 {path}"
+    #
+    #     xt = subprocess.Popen(size_shell, stdout=subprocess.PIPE, shell=True)
+    #     xx = subprocess.Popen(pull, stdout=subprocess.PIPE, shell=True)
+    #     get_content = xt.stdout.read().decode()
+    #
+    #     xts = get_content.replace("\r\n", "")
+
+
 
     def reset_size(self):
         """
@@ -261,6 +281,37 @@ class Devices(_InitBase):
 
         return Settings()
 
+    @property
+    def date(self):
+        device = self.device
+        driver = self.adb_path
+
+        class at:
+            """
+            星期几
+            月
+            日期
+            时间
+            时间区域
+            年
+            """
+
+            def get_date(self):
+                if device is None:
+                    get_content = None
+
+                    size_shell = f"{driver}  shell date"
+                else:
+                    size_shell = f"{driver} -s {device} date"
+
+                xt = subprocess.Popen(size_shell, stdout=subprocess.PIPE, shell=True)
+                get_content = xt.stdout.read().decode()
+                xp = get_content.replace("\r\n","").split(" ")
+                return xp
+
+        return at()
+
+
 
 
 
@@ -278,11 +329,22 @@ class _AdbActivity(_InitBase):
         """
         self.install_shell = None
         if self.device is None:
-            self.install_shell = f"{self.adb_path} -s {self.device} tcpip {port}"
-        else:
             self.install_shell = f"{self.adb_path}  tcpip -{port}"
+        else:
+            self.install_shell = f"{self.adb_path} -s {self.device} tcpip {port}"
 
         return subprocess.Popen(self.install_shell).communicate()[0]
+
+    def version(self):
+        self.version_shell = None
+        if self.device is None:
+            self.version_shell = f"{self.adb_path}  shell getprop ro.build.version.release"
+        else:
+            self.version_shell = f"{self.adb_path} -s {self.device} shell getprop ro.build.version.release"
+
+        vr = subprocess.Popen(self.version_shell,stdout=subprocess.PIPE)
+        vr_text = vr.stdout.read().decode()
+        return vr_text
 
 
 
@@ -305,9 +367,11 @@ class _AdbActivity(_InitBase):
                 :return:
                 """
                 if app_path is None:
-                    self.install_shell = f"{adb_path} -s {device} install -r {app_path}"
-                else:
                     self.install_shell = f"{adb_path}  install -r {app_path}"
+
+                else:
+                    self.install_shell = f"{adb_path} -s {device} install -r {app_path}"
+
 
                 return subprocess.Popen(self.install_shell).communicate()[0]
 
@@ -317,9 +381,11 @@ class _AdbActivity(_InitBase):
                 :return:
                 """
                 if app_path is None:
-                    self.install_shell = f"{adb_path} -s {device} install -t {app_path}"
-                else:
                     self.install_shell = f"{adb_path}  install -t {app_path}"
+
+                else:
+                    self.install_shell = f"{adb_path} -s {device} install -t {app_path}"
+
 
                 return subprocess.Popen(self.install_shell).communicate()[0]
 
@@ -329,9 +395,11 @@ class _AdbActivity(_InitBase):
                 :return:
                 """
                 if app_path is None:
-                    self.install_shell = f"{adb_path} -s {device} install -d {app_path}"
-                else:
                     self.install_shell = f"{adb_path}  install -d {app_path}"
+
+                else:
+                    self.install_shell = f"{adb_path} -s {device} install -d {app_path}"
+
 
                 return subprocess.Popen(self.install_shell).communicate()[0]
 
@@ -341,9 +409,11 @@ class _AdbActivity(_InitBase):
                 :return:
                 """
                 if app_path is None:
-                    self.install_shell = f"{adb_path} -s {device} install -p {app_path}"
-                else:
                     self.install_shell = f"{adb_path}  install -p {app_path}"
+
+                else:
+                    self.install_shell = f"{adb_path} -s {device} install -p {app_path}"
+
 
                 return subprocess.Popen(self.install_shell).communicate()[0]
 
@@ -354,9 +424,11 @@ class _AdbActivity(_InitBase):
                 :return:
                 """
                 if app_path is None:
-                    self.install_shell = f"{adb_path} -s {device} install -g {app_path}"
-                else:
                     self.install_shell = f"{adb_path}  install -g {app_path}"
+
+                else:
+                    self.install_shell = f"{adb_path} -s {device} install -g {app_path}"
+
 
                 return subprocess.Popen(self.install_shell).communicate()[0]
 
@@ -472,6 +544,34 @@ class _AdbActivity(_InitBase):
         for_wait_shell = f"{self.adb_path}  wait-for-device"
         return subprocess.Popen(for_wait_shell)
 
+
+    def start_server(self):
+        """
+        开启adb服务
+        :return:
+        """
+        start_server = f"{self.adb_path}  start-server"
+        return subprocess.Popen(start_server)
+
+    def kill(self):
+        """
+        关闭adb服务
+        :return:
+        """
+        kill_server = f"{self.adb_path}  kill-server"
+        return subprocess.Popen(kill_server)
+
+    def reboot(self):
+        """
+        关闭adb服务
+        :return:
+        """
+        reboot = None
+        if self.device is None:
+            reboot = f"{self.adb_path}  reboot"
+        else:
+            reboot = f"{self.adb_path}  -s {self.device} reboot"
+        return subprocess.Popen(reboot)
 
     def get_packages(self):
         """

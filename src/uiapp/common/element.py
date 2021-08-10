@@ -299,6 +299,15 @@ class Event(_InitBase):
         return Event._touch
 
     def slide(self,ex,ey,sx=None,sy=None,timeout=500):
+        """
+        滑动
+        :param ex:
+        :param ey:
+        :param sx:
+        :param sy:
+        :param timeout:
+        :return:
+        """
         if sx and sx is None:
             self._swipe(startX=self.el[0], startY=self.el[1], endX=ex, endY=ey, timeToSwipe=timeout)
         else:
@@ -306,11 +315,20 @@ class Event(_InitBase):
         return Event.slide
 
     def click(self):
+        """
+        点击
+        :return:
+        """
         self._touch(dx=self.el[0],dy=self.el[1])
         print(self.el[0],self.el[1])
         return Event.click
 
     def clicks(self,e):
+        """
+        点击
+        :param e:
+        :return:
+        """
         self._touch(dx=e[0],dy=e[1])
         return Event.click
 
