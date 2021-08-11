@@ -40,7 +40,7 @@ class ElementBase(_InitBase):
         super(ElementBase, self).__init__(devices=devices,driver=driver)
         self.text = None #当前控件的文本
         self.index = None #当前控件的index
-        self.package = None # 当前控件属于那个应用程序的包名
+        self.package = None #当前控件属于那个应用程序的包名
         self.devices = devices
         self.pos = None
         self.contentdesc = None
@@ -62,7 +62,6 @@ class ElementBase(_InitBase):
         for x in treeIter:
             # x.attrib 当前节点的属性
             if x.attrib[attrib] == name:
-                print(x.attrib)
                 xp = x.attrib["bounds"]
                 pattern = re.compile(r"\d+")  # 组合成一维数组
                 xx = pattern.findall(xp)
@@ -92,7 +91,6 @@ class ElementBase(_InitBase):
         for x in treeIter:
             # x.attrib 当前节点的属性
             if x.attrib[attrib] == name:
-                print(x.attrib)
                 xp = x.attrib["bounds"]
                 pattern = re.compile(r"\d+")  # 组合成一维数组
                 xx = pattern.findall(xp)
