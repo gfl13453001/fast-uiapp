@@ -110,55 +110,8 @@ class ElementBase(_InitBase):
                 }])
         return current_elements
 
-    def _element_log(self,attrib,name):
-        dump()
-        tree = ET.ElementTree(file=r"D:\ui\uiapp.xml")
-        treeIter = tree.iter(tag="node")
-        print(type(treeIter))
-        for x in treeIter:
-            # x.attrib 当前节点的属性
-            if x.attrib[attrib] == name:
-                print(x.attrib)
-                print(x.attrib["bounds"])
-                xp = x.attrib["bounds"]
-                # xp.f
-                pattern = re.compile(r"\d+")  # 组合成一维数组
-                xx = pattern.findall(xp)
-                print(xx)
-                # pos_x = (int(xx[2]) - int(xx[0])) + int(xx[2]) - int(xx[0])
-                # pos_x = (int(xx[2]) - int(xx[0])) / 2.0 + int(xx[2]) - int(xx[0])
-                # pos_y = (int(xx[3]) - int(xx[1])) / 2.0 + int(xx[1])
-                pos_x = (int(xx[2]) - int(xx[0])) / 2 + int(xx[0])
-                pos_y = (int(xx[3]) - int(xx[1])) / 2 + int(xx[1])
-                print(pos_x, pos_y)
 
-    def element_get_text(self,attrib,name):
-        """
-        获取对应的属性text
-        :param attrib:
-        :param name:
-        :return:
-        """
-        dump()
-        tree = ET.ElementTree(file=r"D:\ui\uiapp.xml")
-        treeIter = tree.iter(tag="node")
-        for x in treeIter:
-            # x.attrib 当前节点的属性
-            if x.attrib[attrib] == name:
-                print(x.attrib)
-                print(x.attrib["bounds"])
-                xp = x.attrib["text"]
-                print(xp)
-                # xp.f
-                # pattern = re.compile(r"\d+")  # 组合成一维数组
-                # xx = pattern.findall(xp)
-                # print(xx)
-                # pos_x = (int(xx[2]) - int(xx[0])) + int(xx[2]) - int(xx[0])
-                # pos_x = (int(xx[2]) - int(xx[0])) / 2.0 + int(xx[2]) - int(xx[0])
-                # pos_y = (int(xx[3]) - int(xx[1])) / 2.0 + int(xx[1])
-                # pos_x = (int(xx[2]) - int(xx[0])) / 2 + int(xx[0])
-                # pos_y = (int(xx[3]) - int(xx[1])) / 2 + int(xx[1])
-                # print(pos_x, pos_y)
+
 
     def element_by_text(self,text):
         """
@@ -183,7 +136,7 @@ class ElementBase(_InitBase):
         :param y:
         :return:
         """
-        # 418.0 188.0
+
         ele = x,y
         if ele is None:
             raise CoordElementException(msg="元素无法定位到")
@@ -256,13 +209,6 @@ class ElementBase(_InitBase):
             return ele_object_list
 
 
-
-
-
-    # def get_text_val(self,attrib):
-    #     return self._element_get_text(attrib=)
-
-
     def element_file(self):
         pass
 
@@ -330,9 +276,6 @@ class Event(_InitBase):
         touch_event = f"{self.adb_path}  shell input swipe  {startX}  {startY} {endX} {endY} {timeToSwipe}" if self.device is None else \
             f"{self.adb_path} -s {self.devices} shell input swipe  {startX}  {startY} {endX} {endY} {timeToSwipe}"
 
-        print(self.devices)
-        print(touch_event)
-
         subprocess.Popen(touch_event)
         return Event._touch
 
@@ -358,7 +301,6 @@ class Event(_InitBase):
         :return:
         """
         self._touch(dx=self.el[0],dy=self.el[1])
-        print(self.el[0],self.el[1])
         return Event.click
 
     def clicks(self,e):
@@ -370,22 +312,13 @@ class Event(_InitBase):
         self._touch(dx=e[0],dy=e[1])
         return Event.click
 
-    # def get_text(self,x, y):
-    #     """
-    #     按照坐标进行获取文本
-    #     usage: touch(500, 500)
-    #     """
-    #     # stdout=subprocess.PIPE
-    #     return subprocess.Popen(rf"{self.adb_path}  shell input tap {dx}  {dy}",
-    #                      )
+
 
     def value(self,val):
         """
         当前焦点控件进行输入文本内容
         usage: touch(500, 500)
         """
-        print(val)
-        #  stdout=subprocess.PIPE
         if self.device is None:
             return subprocess.Popen(
                 rf'{self.adb_path}  shell am broadcast -a ADB_INPUT_B64 --es msg "{val}"',
@@ -394,13 +327,9 @@ class Event(_InitBase):
             return subprocess.Popen(
                 rf'{self.adb_path} -s {self.device} shell am broadcast -a ADB_INPUT_B64 --es msg "{val}"',
                             )
-        # return subprocess.Popen(rf'{self.adb_path}  shell input text "{val.encode()}"',
-        #                  stdout=subprocess.PIPE).communicate()[0]
 
-# adb shell ime set com.android.adbkeyboard/.AdbIME 设置默认输入法
-# adb wait-for-device
-# adb shell am start -n com.tencent.mobileqq/.activity.SplashActivity 启动app
 if __name__ == '__main__':
+    pass
     # e = Event()
     # p = e.element_by_class("android.view.View")
     # print(e.touch(p[0], p[1]))
@@ -420,7 +349,7 @@ if __name__ == '__main__':
 
     # ex.value(val=str(a)[1:])
 
-    import uiautomator2 as u2
-
-    d = u2.connect('127.0.0.1:5555')
-    d().click()
+    # import uiautomator2 as u2
+    #
+    # d = u2.connect('127.0.0.1:5555')
+    # d().click()

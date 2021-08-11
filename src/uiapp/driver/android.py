@@ -44,7 +44,7 @@ class _InitBase(object):
             shell = f"{self.adb_path}  shell uiautomator dump {self.dump_file}"
         else:
             shell = f"{self.adb_path} -s {self.device} shell uiautomator dump {self.dump_file}"
-        print(shell)
+
         subprocess.Popen(shell)
 
 
@@ -87,10 +87,10 @@ class _InitBase(object):
             k_shell = f"{self.adb_path} -s {self.device} shell ime set com.android.adbkeyboard/.AdbIME"
 
         x = subprocess.Popen(x_shell, stdout=subprocess.PIPE).communicate()[0]
-        print(x.decode())
+
         # 设置默认输入法
         k = subprocess.Popen(k_shell, stdout=subprocess.PIPE).communicate()[0]
-        print(k.decode())
+
 
         return _InitBase
 
@@ -152,11 +152,9 @@ class Devices(_InitBase):
         get_content = xt.stdout.read().decode()
 
         xts = get_content.replace("\r\n","")
-        print(xts)
-        # get_window_size = [x.replace(" ","").split("x") for x in xts.split(":")]
-        # return int(get_window_size[-1][0]),int(get_window_size[-1][1])
-    #
-    # adb shell /system/bin/screencap -p /sdcard/screenshot.png
+
+
+
     def screen(self,path,name):
         size_shell = None
         file = "screenshot.png"
@@ -175,23 +173,6 @@ class Devices(_InitBase):
         get_content = xt.stdout.read().decode()
 
         xts = get_content.replace("\r\n", "")
-        print(xts)
-
-    # def record(self,path):
-    #     adb shell screenrecord /sdcard/demo.mp4 --time-limit 5
-    #     if self.device is None:
-    #         size_shell = f"{self.adb_path}  shell  screenrecord /sdcard/demo.mp4"
-    #         print(size_shell)
-    #         pull = f"{self.adb_path}    pull /sdcard/demo.mp4 {path}"
-    #     else:
-    #         size_shell = f"{self.adb_path} -s {self.device} shell   screenrecord /sdcard/demo.mp4"
-    #         pull = f"{self.adb_path}    pull /sdcard/demo.mp4 {path}"
-    #
-    #     xt = subprocess.Popen(size_shell, stdout=subprocess.PIPE, shell=True)
-    #     xx = subprocess.Popen(pull, stdout=subprocess.PIPE, shell=True)
-    #     get_content = xt.stdout.read().decode()
-    #
-    #     xts = get_content.replace("\r\n", "")
 
 
 
@@ -211,9 +192,7 @@ class Devices(_InitBase):
         get_content = xt.stdout.read().decode()
 
         xts = get_content.replace("\r\n","")
-        print(xts)
-        # get_window_size = [x.replace(" ","").split("x") for x in xts.split(":")]
-        # return int(get_window_size[-1][0]),int(get_window_size[-1][1])
+
 
     @property
     def inputmethod(self):
@@ -652,39 +631,4 @@ class AppPackAge(_InitBase):
         xt = subprocess.Popen(package_path_shell, stdout=subprocess.PIPE, shell=True)
         kt = xt.stdout.read().decode("utf-8")
         xt.kill()
-
-    # def packageName_path(self,packagename):
-    #     #adb shell pm list packages -f | find "android.auto_generated_rro_vendor__"
-    #     if self.device is None:
-    #         p1 = subprocess.Popen([f"{self.adb_path}", "shell", "pm", "list","packages","-f"], stdout=subprocess.PIPE)
-    #         # x = r'find "%s"'%packagename
-    #         p2 = subprocess.Popen(['find',"\"android.auto_generated_rro_vendor__\""], stdin=p1.stdout, stdout=subprocess.PIPE)
-    #         # p1.stdout.close()
-    #         output = p2.stdout.read()
-    #
-    #     else:
-    #         p1 = subprocess.Popen([f"{self.adb_path}", "-s",f"{self.device}","shell", "pm", "list","packages", "-f"], stdout=subprocess.PIPE)
-    #         p2 = subprocess.Popen(["find","4"], stdin=p1.stdout, stdout=subprocess.PIPE)
-    #         p1.stdout.close()
-    #         output = p2.communicate()[0]
-    #     print(output)
-    #
-    #     return
-
-
-
-
-
-
-if __name__ == '__main__':
-    d = Devices()
-    print(d.size())
-    # p = AdbActivity()
-    # x = p.select()
-    # p.disconnect(x[0])
-    # print(p.get_package())
-    # print(p.activity("com.android.chrome"))
-    # p.run("com.android.chrome","org.chromium.chrome.browser.ChromeTabbedActivity")
-    # p.close("com.android.chrome")
-    # p.connect(ip="127.0.0.1")
 
