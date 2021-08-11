@@ -479,7 +479,7 @@ class _AdbActivity(_InitBase):
         return index_top
 
 
-    def package_info(self):
+    def _package_info(self):
         get_package_shell = None
         if self.device is None:
             get_package_shell = f"{self.adb_path} shell dumpsys window w  findstr name="
@@ -495,45 +495,12 @@ class _AdbActivity(_InitBase):
             cp = xp.split("=")
             if cp[0] == "mSurface":
                 for pack in cp:
-                    if pack not in ["mSurface","Surface(name","StatusBar)","InputMethod)"]:
+                    if pack.startswith("com") or pack.endswith("Activity"):
                         packages_list.append(pack.replace(")","").split("/"))
+
 
         return packages_list[0]
 
-    def activity(self):
-        """
-        获取app activity
-        :param packagename:
-        :return:
-        """
-        return self.package_info()[-1]
-
-    def get_package(self):
-
-        return self.package_info()[0]
-
-
-    def run(self,package,activity):
-        run_shell = None
-        if self.device is None:
-            run_shell = f"{self.adb_path} shell am start -n  {package}/{activity}"
-        else:
-            run_shell = f"{self.adb_path} -s {self.device} shell am start -n  {package}/{activity}"
-
-        xt = subprocess.Popen(run_shell, stdout=subprocess.PIPE,shell=True)
-        kt = xt.stdout.read().decode("utf-8")
-        xt.kill()
-        return _AdbActivity.run
-
-    def close(self,package):
-        close_shell = None
-        if self.device is None:
-            close_shell = f"{self.adb_path} shell am force-stop {package}"
-        else:
-            close_shell = f"{self.adb_path} -s {self.device} shell am force-stop {package}"
-        xt = subprocess.Popen(close_shell, stdout=subprocess.PIPE,shell=True)
-        kt = xt.stdout.read().decode("utf-8")
-        xt.kill()
 
 
     def for_wait(self):
@@ -573,6 +540,55 @@ class _AdbActivity(_InitBase):
             reboot = f"{self.adb_path}  -s {self.device} reboot"
         return subprocess.Popen(reboot)
 
+
+
+
+    def call(self,tel):
+        """
+        拨打电话
+        :param tel:
+        :return:
+        """
+
+
+class AppPackAge(_InitBase):
+
+    def __init__(self,devices,driver="main"):
+        super(AppPackAge, self).__init__(devices,driver=driver)
+
+
+    def current_package_info(self):
+        """
+        获取当前启动的app包的信息
+        :return:
+        """
+        if self.device is None:
+            p1 = subprocess.Popen([f"{self.adb_path}", "shell", "dumpsys", "window"], stdout=subprocess.PIPE)
+            p2 = subprocess.Popen(["findstr", "mCurrentFocus"], stdin=p1.stdout, stdout=subprocess.PIPE)
+            p1.stdout.close()
+            output = p2.communicate()[0]
+        else:
+            p1 = subprocess.Popen([f"{self.adb_path}", "-s",f"{self.device}","shell", "dumpsys", "window"], stdout=subprocess.PIPE)
+            p2 = subprocess.Popen(["findstr", "mCurrentFocus"], stdin=p1.stdout, stdout=subprocess.PIPE)
+            p1.stdout.close()
+            output = p2.communicate()[0]
+        xi = output.decode().replace("\r\n","").replace("}","").split(" ")
+        return tuple(xi[-1].split("/"))
+
+    def activity(self):
+        """
+        获取app activity
+        :param packagename:
+        :return:
+        """
+        return self.current_package_info()[-1]
+
+    def get_package(self):
+        """
+        :return:
+        """
+        return self.current_package_info()[0]
+
     def get_packages(self):
         """
         获取安装包package
@@ -592,13 +608,72 @@ class _AdbActivity(_InitBase):
             package_list.append(x.replace("\r",""))
         return package_list
 
-
-    def call(self,tel):
+    def run(self,package,activity):
         """
-        拨打电话
-        :param tel:
+        启动app
+        :param package:
+        :param activity:
         :return:
         """
+        run_shell = None
+        if self.device is None:
+            # run_shell = f"{self.adb_path} shell am start -W  {package}/{activity}"
+            run_shell = f"{self.adb_path} shell am start -n  {package}/{activity}"
+        else:
+            run_shell = f"{self.adb_path} -s {self.device} shell am start -n  {package}/{activity}"
+
+        xt = subprocess.Popen(run_shell, stdout=subprocess.PIPE,shell=True)
+        kt = xt.stdout.read().decode("utf-8")
+        print(run_shell)
+        xt.kill()
+        return AppPackAge.run
+
+    def close(self,package):
+        """
+        关闭启动的应用
+        :param package:
+        :return:
+        """
+        close_shell = None
+        if self.device is None:
+            close_shell = f"{self.adb_path} shell am force-stop {package}"
+        else:
+            close_shell = f"{self.adb_path} -s {self.device} shell am force-stop {package}"
+        xt = subprocess.Popen(close_shell, stdout=subprocess.PIPE,shell=True)
+        kt = xt.stdout.read().decode("utf-8")
+        xt.kill()
+
+    def package_path(self):
+        package_path_shell = None
+        if self.device is None:
+            package_path_shell = f"{self.adb_path}  shell pm list packages -f"
+        else:
+            package_path_shell = f"{self.adb_path} -s {self.device} shell pm list packages -f"
+        xt = subprocess.Popen(package_path_shell, stdout=subprocess.PIPE, shell=True)
+        kt = xt.stdout.read().decode("utf-8")
+        xt.kill()
+
+    # def packageName_path(self,packagename):
+    #     #adb shell pm list packages -f | find "android.auto_generated_rro_vendor__"
+    #     if self.device is None:
+    #         p1 = subprocess.Popen([f"{self.adb_path}", "shell", "pm", "list","packages","-f"], stdout=subprocess.PIPE)
+    #         # x = r'find "%s"'%packagename
+    #         p2 = subprocess.Popen(['find',"\"android.auto_generated_rro_vendor__\""], stdin=p1.stdout, stdout=subprocess.PIPE)
+    #         # p1.stdout.close()
+    #         output = p2.stdout.read()
+    #
+    #     else:
+    #         p1 = subprocess.Popen([f"{self.adb_path}", "-s",f"{self.device}","shell", "pm", "list","packages", "-f"], stdout=subprocess.PIPE)
+    #         p2 = subprocess.Popen(["find","4"], stdin=p1.stdout, stdout=subprocess.PIPE)
+    #         p1.stdout.close()
+    #         output = p2.communicate()[0]
+    #     print(output)
+    #
+    #     return
+
+
+
+
 
 
 if __name__ == '__main__':

@@ -6,13 +6,6 @@
 import re
 import subprocess
 
-# 2.  lxml  解析然后xpath 获取文本属性失败（代码未列出，可参考上面的）， 然后又根据text属性定位，发现找到不。
-# from lxml import etree
-# text = "(xml文本内容）"
-# html = etree.HTML(text)
-# rst = html.xpath('//a')
-# rst = html.xpath('//a[contains(text(),"France")]')
-# from main import Session
 from src.uiapp.common._exception import (
     TextElementException, IDElementException, ClassElementException, CoordElementException
 )
@@ -34,8 +27,16 @@ class UiInit(_InitBase):
 base_init_ = UiInit
 
 class ElementBase(_InitBase):
+    """
+
+    """
 
     def __init__(self,devices,driver="main"):
+        """
+
+        :param devices:
+        :param driver:
+        """
         super(ElementBase, self).__init__(devices=devices,driver=driver)
         self.text = None #当前控件的文本
         self.index = None #当前控件的index
@@ -46,7 +47,13 @@ class ElementBase(_InitBase):
 
 
 
-    def element(self,attrib,name):
+    def _element(self,attrib,name):
+        """
+
+        :param attrib:
+        :param name:
+        :return:
+        """
         base_init_(devices=self.devices)
 
         tree = ET.ElementTree(file=r"D:\ui\uiapp.xml")
@@ -70,6 +77,12 @@ class ElementBase(_InitBase):
 
 
     def _elements(self,attrib,name):
+        """
+
+        :param attrib:
+        :param name:
+        :return:
+        """
         base_init_(devices=self.devices)
 
         tree = ET.ElementTree(file=r"D:\ui\uiapp.xml")
@@ -148,7 +161,12 @@ class ElementBase(_InitBase):
                 # print(pos_x, pos_y)
 
     def element_by_text(self,text):
-        x = self.element(
+        """
+
+        :param text:
+        :return:
+        """
+        x = self._element(
             attrib="text", name=text
         )
         self.pos = x
@@ -173,7 +191,12 @@ class ElementBase(_InitBase):
 
 
     def element_by_id(self,id):
-        ele = self.element(
+        """
+
+        :param id:
+        :return:
+        """
+        ele = self._element(
             attrib="resource-id", name=id
         )
         if ele is None:
@@ -183,7 +206,12 @@ class ElementBase(_InitBase):
 
 
     def element_by_class(self,classname):
-        ele = self.element(
+        """
+
+        :param classname:
+        :return:
+        """
+        ele = self._element(
             attrib="class", name=classname
         )
         if ele is None:
@@ -192,6 +220,11 @@ class ElementBase(_InitBase):
             return Event(devices=self.devices,el=tuple(ele),text=self.text)
 
     def elements_by_text(self,text):
+        """
+
+        :param text:
+        :return:
+        """
         ele = self._elements(
             attrib="text", name=text
         )
@@ -204,6 +237,11 @@ class ElementBase(_InitBase):
 
 
     def elements_by_class(self,classname):
+        """
+
+        :param classname:
+        :return:
+        """
         ele = self._elements(
             attrib="class", name=classname
         )
@@ -308,10 +346,10 @@ class Event(_InitBase):
         :param timeout:
         :return:
         """
-        if sx and sx is None:
+        if sx is None and sy is None:
             self._swipe(startX=self.el[0], startY=self.el[1], endX=ex, endY=ey, timeToSwipe=timeout)
         else:
-            self._swipe(startX=sx,startY=sy,endX=ex,endY=ey,timeToSwipe=timeout)
+            self._swipe(startX=sx, startY=sy, endX=ex, endY=ey, timeToSwipe=timeout)
         return Event.slide
 
     def click(self):
