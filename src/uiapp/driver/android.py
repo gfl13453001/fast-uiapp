@@ -487,8 +487,13 @@ class _AdbActivity(_InitBase):
         进行重新重启adb连接
         :return:
         """
-        for_wait_shell = f"{self.adb_path}  wait-for-device"
-        return subprocess.Popen(for_wait_shell)
+        for_wait_shell = None
+        if self.device is None:
+            for_wait_shell = f"{self.adb_path} wait-for-device"
+        else:
+            for_wait_shell = f"{self.adb_path}  -s {self.device} wait-for-device"
+        subprocess.Popen(for_wait_shell)
+        return _AdbActivity.for_wait
 
 
     def start_server(self):
@@ -496,16 +501,28 @@ class _AdbActivity(_InitBase):
         开启adb服务
         :return:
         """
-        start_server = f"{self.adb_path}  start-server"
-        return subprocess.Popen(start_server)
+        start_server = None
+        if self.device is None:
+            start_server = f"{self.adb_path}  start-server"
+        else:
+            start_server = f"{self.adb_path}  -s {self.device} start-server"
+        subprocess.Popen(start_server)
+        return _AdbActivity.start_server
 
-    def kill(self):
+    def kill_server(self):
         """
         关闭adb服务
         :return:
         """
-        kill_server = f"{self.adb_path}  kill-server"
-        return subprocess.Popen(kill_server)
+        kill_server = None
+        if self.device is None:
+
+            kill_server = f"{self.adb_path}  kill-server"
+        else:
+            kill_server = f"{self.adb_path} -s {self.device} kill-server"
+        subprocess.Popen(kill_server)
+
+        return _AdbActivity.kill
 
     def reboot(self):
         """

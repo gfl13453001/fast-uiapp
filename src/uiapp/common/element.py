@@ -59,19 +59,22 @@ class ElementBase(_InitBase):
         tree = ET.ElementTree(file=r"D:\ui\uiapp.xml")
         treeIter = tree.iter(tag="node")
 
+        self.pos_x = None
+        self.pos_y = None
         for x in treeIter:
             # x.attrib 当前节点的属性
             if x.attrib[attrib] == name:
                 xp = x.attrib["bounds"]
                 pattern = re.compile(r"\d+")  # 组合成一维数组
                 xx = pattern.findall(xp)
-                pos_x = (int(xx[2]) - int(xx[0])) / 2 + int(xx[0])
-                pos_y = (int(xx[3]) - int(xx[1])) / 2 + int(xx[1])
+                self.pos_x = (int(xx[2]) - int(xx[0])) / 2 + int(xx[0])
+                self.pos_y = (int(xx[3]) - int(xx[1])) / 2 + int(xx[1])
                 self.index = x.attrib["index"]
                 self.package = x.attrib["package"]
                 self.contentdesc = x.attrib["content-desc"]
                 self.text = x.attrib["text"]
-                return pos_x, pos_y
+                continue
+        return self.pos_x, self.pos_y
 
 
 

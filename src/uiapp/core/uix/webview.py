@@ -36,7 +36,7 @@ class WebviewDriver():
             else:
                 tab.stop()
         return tabs
-    
+
     def get_activate_tab(self):
         pass
 
@@ -58,7 +58,7 @@ class BrowserTab():
 
     def close(self):
         self._tab.stop()
-    
+
     def _evaluate(self, expression, **kwargs):
         if kwargs:
             d = {}
@@ -101,7 +101,7 @@ class BrowserTab():
             return JSON.stringify([x, y])
         })(${xpath})''', xpath=xpath)
         return json.loads(coord)
-    
+
     def click(self, x, y, duration=0.2, tap_count=1):
         mills = int(1000*duration) # convert to ms
         self._call("Input.synthesizeTapGesture", x=x, y=y, duration=mills, tapCount=tap_count)
@@ -212,12 +212,22 @@ def main():
         data = requests.get(f"http://localhost:{port}/json/version").json()
         import pprint
         pprint.pprint(data)
-    
 
-if __name__ == "__main__":
-    main()
-    # if args.test:
-    #     print("---- test ----")
-    #     test_self_driver()
-    # else:
-    #     chromedriver()
+# Only local connections are allowed.
+# Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
+# ChromeDriver was started successfully.
+
+#  --port=PORT                     port to listen on
+#   --adb-port=PORT                 adb server port
+#   --log-path=FILE                 write server log to file instead of stderr, increases log level to INFO
+#   --log-level=LEVEL               set log level: ALL, DEBUG, INFO, WARNING, SEVERE, OFF
+#   --verbose                       log verbosely (equivalent to --log-level=ALL)
+#   --silent                        log nothing (equivalent to --log-level=OFF)
+#   --append-log                    append log file instead of rewriting
+#   --replayable                    (experimental) log verbosely and don't truncate long strings so that the log can be replayed.
+#   --version                       print the version number and exit
+#   --url-base                      base URL path prefix for commands, e.g. wd/url
+#   --readable-timestamp            add readable timestamps to log
+#   --enable-chrome-logs            show logs from the browser (overrides other logging options)
+#   --allowed-ips                   comma-separated allowlist of remote IP addresses which are allowed to connect to ChromeDriver
+
