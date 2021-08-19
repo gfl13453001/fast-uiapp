@@ -329,28 +329,4 @@ class Event(_InitBase):
                 rf'{self.adb_path} -s {self.device} shell am broadcast -a ADB_INPUT_B64 --es msg "{val}"',
                             )
 
-if __name__ == '__main__':
-    pass
-    # e = Event()
-    # p = e.element_by_class("android.view.View")
-    # print(e.touch(p[0], p[1]))
-    #
-    # print(1)
 
-    # s = e.element_by_id("com.jideos.jnotes:id/rb_name")
-    # print(s)
-    # print(e.text)
-    # ex = Event()
-    # ex.touch(p[0],p[1])
-    #
-
-    # value = '小夜晚了  1'
-    # a = base64.b64encode(value.encode('utf-8'))
-    # os.system("adb shell am broadcast -a ADB_INPUT_B64 --es msg '" + str(a)[1:] + "'")
-
-    # ex.value(val=str(a)[1:])
-
-    # import uiautomator2 as u2
-    #
-    # d = u2.connect('127.0.0.1:5555')
-    # d().click()

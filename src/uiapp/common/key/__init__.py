@@ -6,4 +6,4 @@
 import os
 
 
-print(BASE_DIR)
+

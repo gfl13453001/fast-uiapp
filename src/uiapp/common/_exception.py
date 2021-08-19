@@ -73,7 +73,6 @@ class CoordElementException(ElementLocalizationException):
 
 class PackageInfoException(Exception):
     """
-    Base element exception.
     """
 
     def __init__(self, msg=None, screen=None, stacktrace=None):

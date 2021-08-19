@@ -522,11 +522,11 @@ class _AdbActivity(_InitBase):
             kill_server = f"{self.adb_path} -s {self.device} kill-server"
         subprocess.Popen(kill_server)
 
-        return _AdbActivity.kill
+        return _AdbActivity.kill_server
 
     def reboot(self):
         """
-        关闭adb服务
+        重启手机
         :return:
         """
         reboot = None
