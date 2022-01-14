@@ -27,8 +27,9 @@ from src.uiapp.common._exception import (
 )
 
 from src.uiapp.driver.android import (
-    _AdbActivity, Devices, AppPackAge,_InitBase
+    _AdbActivity, Devices, AppPackage,_InitBase
 )
+
 
 
 

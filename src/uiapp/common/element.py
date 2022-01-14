@@ -67,6 +67,7 @@ class ElementBase(_InitBase):
                 xp = x.attrib["bounds"]
                 pattern = re.compile(r"\d+")  # 组合成一维数组
                 xx = pattern.findall(xp)
+
                 self.pos_x = (int(xx[2]) - int(xx[0])) / 2 + int(xx[0])
                 self.pos_y = (int(xx[3]) - int(xx[1])) / 2 + int(xx[1])
                 self.index = x.attrib["index"]
@@ -158,6 +159,8 @@ class ElementBase(_InitBase):
         else:
             return Event(devices=self.devices,el=tuple(ele),text=self.text)
 
+    # -------------------------------------------
+
 
     def element_by_class(self,classname):
         """
@@ -172,6 +175,8 @@ class ElementBase(_InitBase):
             raise ClassElementException(msg="元素无法定位到")
         else:
             return Event(devices=self.devices,el=tuple(ele),text=self.text)
+
+    # -------------------------------------------
 
     def elements_by_text(self,text):
         """
@@ -189,6 +194,8 @@ class ElementBase(_InitBase):
         else:
             return ele_object_list
 
+    # -------------------------------------------
+
 
     def elements_by_class(self,classname):
         """
@@ -201,7 +208,6 @@ class ElementBase(_InitBase):
         )
         ele_object_list = []
         ev = [ele_object_list.append(
-
             Event(devices=self.devices,el=tuple(x[0]),text=x[1]["text"])
         ) for x in ele]
         if ele is None:
@@ -209,9 +215,15 @@ class ElementBase(_InitBase):
         else:
             return ele_object_list
 
+    # -------------------------------------------
+
 
     def element_file(self):
         pass
+
+
+
+# ===================
 
 class Event(_InitBase):
     """

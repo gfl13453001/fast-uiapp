@@ -4,7 +4,7 @@
 import abc
 
 import uiautomator2 as u2
-from core import wda
+import wda
 from logzero import logger
 from PIL import Image
 

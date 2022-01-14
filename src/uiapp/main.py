@@ -1,18 +1,25 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# authors:guanfl
 # 2021/8/5
+
+#
+
 import os
+import subprocess
 import sys
 import time
 
-from src.uiapp.common._exception import InfoValueException, NotMethodException
+from src.uiapp.common._exception import (
+    InfoValueException, NotMethodException
+)
 from src.uiapp.common.element import ElementBase,Event
-from src.uiapp.driver.android import _AdbActivity, Devices, AppPackAge
+from src.uiapp.driver.android import (
+    _AdbActivity, Devices, AppPackage, NetStat, Monkey,
+)
 
 
-class Device(_AdbActivity,ElementBase,Devices,Event,AppPackAge):
+class Device(_AdbActivity,ElementBase,Devices,Event,AppPackage,NetStat,Monkey):
     """Device object"""
 
 
@@ -51,6 +58,7 @@ class ChainedElement(Device):
         try:
             if info["package"] and info["activity"]:
                self.run(package=info["package"],activity=info["activity"])
+
         except:
             raise InfoValueException(msg="你需要传递的是一个dict类型、且key必须为: package和activity")
 
@@ -105,10 +113,19 @@ class ChainedElement(Device):
 
 if __name__ == '__main__':
     pass
+    # com.android.adbkeyboard
+
+    app = start()
+    app.get_version("com.jideos.jnotes")
 
 
-    # app = connect("127.0.0.1:5555")
-    # app.run("com.android.chrome","org.chromium.chrome.browser.ChromeTabbedActivity")
+    # app.run('com.jideos.jnotes', 'com.jideos.module_main.pad.ui.activity.NoteListActivity')
+    print(app.is_package("com.android.adbkeyboard"))
+    #
+    # app.element_by_id("com.jideos.jnotes:id/add_note").click()
+    # app.element_by_id("com.jideos.jnotes:id/list_add_folder").click()
+
+    # app.element_by_text("名称").click()
     #
     # pass
     # app = connect("127.0.0.1:5555")
@@ -134,13 +151,13 @@ if __name__ == '__main__':
     #
     # print(x)
 
-    xp = ChainedElement()
-    xp.startApp(
-        {
-            "package":"1",
-            "activity":"1"
-        }
-    ).setUp(class_name=1)
+    # xp = ChainedElement()
+    # xp.startApp(
+    #     {
+    #         "package":"1",
+    #         "activity":"1"
+    #     }
+    # ).setUp(text="下次再说")
     # C:\Users\Admin\AppData\Local\Android\Sdk\platform-tools\adb.exe
 
     # print(os.system("adb shell dumpsys activity | findstr mFocusedActivity"))
