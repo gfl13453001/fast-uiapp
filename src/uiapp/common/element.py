@@ -3,8 +3,10 @@
 
 # authors:guanfl
 # 2021/8/5
+import base64
 import re
 import subprocess
+import time
 
 from src.uiapp.common._exception import (
     TextElementException, IDElementException, ClassElementException, CoordElementException
@@ -14,19 +16,19 @@ try:
 except ImportError:
     import xml.etree.ElementTree as ET
 
-from src.uiapp.driver.android import _InitBase
+from src.uiapp.driver.android import InitBase
 
 
-class UiInit(_InitBase):
-    def __init__(self,devices,driver="main"):
-        super(UiInit, self).__init__(driver=driver,devices=devices)
+class UiInit(InitBase):
+    def __init__(self,device,driver="main"):
+        super(UiInit, self).__init__(device,driver=driver)
         self.setup()
 
 
 
 base_init_ = UiInit
 
-class ElementBase(_InitBase):
+class ElementBase(InitBase):
     """
 
     """
@@ -37,7 +39,7 @@ class ElementBase(_InitBase):
         :param devices:
         :param driver:
         """
-        super(ElementBase, self).__init__(devices=devices,driver=driver)
+        super(ElementBase, self).__init__(devices,driver=driver)
         self.text = None #当前控件的文本
         self.index = None #当前控件的index
         self.package = None #当前控件属于那个应用程序的包名
@@ -47,14 +49,14 @@ class ElementBase(_InitBase):
 
 
 
-    def _element(self,attrib,name):
+    def __element(self,attrib,name):
         """
 
         :param attrib:
         :param name:
         :return:
         """
-        base_init_(devices=self.devices)
+        base_init_(device=self.devices)
 
         tree = ET.ElementTree(file=r"D:\ui\uiapp.xml")
         treeIter = tree.iter(tag="node")
@@ -79,14 +81,14 @@ class ElementBase(_InitBase):
 
 
 
-    def _elements(self,attrib,name):
+    def __elements(self,attrib,name):
         """
 
         :param attrib:
         :param name:
         :return:
         """
-        base_init_(devices=self.devices)
+        base_init_(device=self.devices)
 
         tree = ET.ElementTree(file=r"D:\ui\uiapp.xml")
         treeIter = tree.iter(tag="node")
@@ -121,14 +123,20 @@ class ElementBase(_InitBase):
         :param text:
         :return:
         """
-        x = self._element(
+        res = 0
+        x = self.__element(
             attrib="text", name=text
         )
         self.pos = x
-        if x is None:
-            raise TextElementException(msg="元素无法定位到")
-        else:
-            return Event(devices=self.devices,el=tuple(x),text=self.text)
+        while True:
+            if res >= 2 :
+                break
+            else:
+                if x[0] is None:
+                    raise TextElementException(msg="元素无法定位到")
+                else:
+                    return Event(device=self.devices,el=tuple(x),text=self.text)
+                res += 1
 
 
     def element_by_coord(self,x,y):
@@ -142,7 +150,7 @@ class ElementBase(_InitBase):
         ele = x,y
         if ele is None:
             raise CoordElementException(msg="元素无法定位到")
-        return Event(devices=self.devices,el=tuple(ele))
+        return Event(device=self.devices,el=tuple(ele))
 
 
     def element_by_id(self,id):
@@ -151,13 +159,15 @@ class ElementBase(_InitBase):
         :param id:
         :return:
         """
-        ele = self._element(
+        ele = self.__element(
             attrib="resource-id", name=id
         )
-        if ele is None:
+
+
+        if ele[0] is None:
             raise IDElementException(msg="元素无法定位到")
         else:
-            return Event(devices=self.devices,el=tuple(ele),text=self.text)
+            return Event(device=self.devices,el=tuple(ele),text=self.text)
 
     # -------------------------------------------
 
@@ -168,13 +178,13 @@ class ElementBase(_InitBase):
         :param classname:
         :return:
         """
-        ele = self._element(
+        ele = self.__element(
             attrib="class", name=classname
         )
         if ele is None:
             raise ClassElementException(msg="元素无法定位到")
         else:
-            return Event(devices=self.devices,el=tuple(ele),text=self.text)
+            return Event(device=self.devices,el=tuple(ele),text=self.text)
 
     # -------------------------------------------
 
@@ -184,11 +194,11 @@ class ElementBase(_InitBase):
         :param text:
         :return:
         """
-        ele = self._elements(
+        ele = self.__elements(
             attrib="text", name=text
         )
         ele_object_list = []
-        ev = [ele_object_list.append(Event(devices=self.devices,el=tuple(x[0]),text=x[1]["text"])) for x in ele]
+        ev = [ele_object_list.append(Event(device=self.devices,el=tuple(x[0]),text=x[1]["text"])) for x in ele]
         if ele is None:
             raise TextElementException(msg="元素无法定位到")
         else:
@@ -203,17 +213,18 @@ class ElementBase(_InitBase):
         :param classname:
         :return:
         """
-        ele = self._elements(
+        ele = self.__elements(
             attrib="class", name=classname
         )
         ele_object_list = []
         ev = [ele_object_list.append(
-            Event(devices=self.devices,el=tuple(x[0]),text=x[1]["text"])
+            Event(device=self.devices,el=tuple(x[0]),text=x[1]["text"])
         ) for x in ele]
         if ele is None:
             raise ClassElementException(msg="元素无法定位到")
         else:
             return ele_object_list
+
 
     # -------------------------------------------
 
@@ -225,11 +236,11 @@ class ElementBase(_InitBase):
 
 # ===================
 
-class Event(_InitBase):
+class Event(InitBase):
     """
 
     """
-    def __init__(self,el:tuple,text=None,driver="main",devices=None,
+    def __init__(self,el:tuple,text=None,driver="main",device=None,
                  des=None,package=None,index=None):
         """
 
@@ -241,9 +252,9 @@ class Event(_InitBase):
         :param package:
         :param index:
         """
-        super(Event, self).__init__(driver=driver,devices=devices)
+        super(Event, self).__init__(device,driver=driver)
         self.el = el
-        self.devices = devices
+        self.devices = device
         self.context = text
         self.des = des
         self.package = package
@@ -276,6 +287,7 @@ class Event(_InitBase):
 
         touch_event = f"{self.adb_path}  shell input tap {dx}  {dy}" if self.device is None else \
             f"{self.adb_path} -s {self.devices} shell input tap {dx}  {dy}"
+        print(touch_event)
 
 
         subprocess.Popen(touch_event)

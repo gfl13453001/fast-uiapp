@@ -8,13 +8,13 @@
 name = "uiapp"
 
 __all__ = [
-    "ElementBase","Event","UiInit","connect","start","ChainedElement","_InitBase","Devices","_AdbActivity"
+    "ElementBase","Event","UiInit","start","ChainedElement","InitBase","Devices","_AdbActivity",
     "TextElementException"
 ]
 
 
 from src.uiapp.main import (
-    connect,start,ChainedElement
+    start,ChainedElement
 )
 
 
@@ -27,7 +27,7 @@ from src.uiapp.common._exception import (
 )
 
 from src.uiapp.driver.android import (
-    _AdbActivity, Devices, AppPackage,_InitBase
+    _AdbActivity, Devices, AppPackage,InitBase
 )
 
 
@@ -36,7 +36,3 @@ from src.uiapp.driver.android import (
 _version = ["0.01"]
 
 
-
-
-if __name__ == '__main__':
-    pass

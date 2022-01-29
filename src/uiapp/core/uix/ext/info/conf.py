@@ -716,3 +716,14 @@ phones = {"1107": "OPPO 1107",
           "ZUK Z2131": "ZUK Z2",
           "ZUK Z2151": "ZUK Edge"
           }
+
+
+# key
+
+KEY_ = ""
+
+
+
+
+
+
