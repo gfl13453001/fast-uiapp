@@ -7,10 +7,19 @@ import os
 import time
 
 from src.uiapp import start
- # = "com.jideos.jnotes"
 
 
-app = start("JSJHG48C18180068")
+app = start()
+app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity')
+
+
+# app.element_by_text("请求授权").click()
+
+
+#
+print(app.shaker())
+
+
 # 启动app
 # app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity')
 # app.element_by_text("请求授权").click()
@@ -18,8 +27,7 @@ app = start("JSJHG48C18180068")
 # app.element_by_text("所有图片").click()
 
 
-
-
+# = "com.jideos.jnotes"
 
 
 # com.example.jideailicense/com.example.jideailicense.MainActivity
@@ -28,7 +36,7 @@ app = start("JSJHG48C18180068")
 # 设置系统默认输入法
 # 点击选图
 # app.element_by_text("选图").click()
-print(app.shaker())
+# print(app.cpu_info())
 # print(app.pm_meminfo('com.jide.baiduinputoverlay'))
 # app.element_by_text("所有图片").click()
 # 点击进入指定的图片文件夹

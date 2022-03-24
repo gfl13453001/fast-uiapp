@@ -58,12 +58,7 @@ setuptools.setup(
     # urllib3==1.25.7
 
 
-    install_requires = [' Appium-Python-Client==0.49',
-                        'testdata==1.1.3',
-                        'PyMySQL==0.9.3',
-                        'Faker==3.0.0',
-                        'fastapi==0.65.2',
-                        'uvicorn==0.14.0'], #第三方依赖包
+    install_requires = [], #第三方依赖包
     package_data={
             #任何包中含有.txt文件，都包含它
             '': ['*.py','*.py-tpl','*.json','*.html','*.pyc','*.xlsx',"*.*"],

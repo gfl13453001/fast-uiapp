@@ -8,6 +8,10 @@ import os
 import subprocess
 import sys
 import time
+import os
+import sys
+
+from src.uiapp.core.keycode import KeyCode
 from src.uiapp.core.license import *
 from src.uiapp.driver.monkey import MonkeyEvent
 
@@ -24,6 +28,7 @@ class InitBase(object):
         :param devices:
         :param driver:
         """
+        print(111,device)
         if device is None:
             self.device = ""
         else:
@@ -210,7 +215,6 @@ class Devices(InitBase):
         设备尺寸大小
         :return:
         """
-        get_content = None
         xt = subprocess.Popen(
             base64.b64decode(WM_SIZE)
                 .decode()
@@ -230,8 +234,8 @@ class Devices(InitBase):
         修改设备分辨率
         :return:
         """
-        size_shell = None
-        xt = subprocess.Popen(
+
+        subprocess.Popen(
             base64.b64decode(SET_WM_SIZE)
                 .decode()
                 .format(
@@ -239,9 +243,7 @@ class Devices(InitBase):
                 device=self.device,
                 x=x,y=y
             ), stdout=subprocess.PIPE, shell=True)
-        get_content = xt.stdout.read().decode()
 
-        xts = get_content.replace("\r\n","")
 
     def screen(self,path,name):
         """
@@ -347,39 +349,16 @@ class Devices(InitBase):
         :return:
         """
 
-        quench = f"{self.adb_path} shell input keyevent 223"
-        quenchs = f"{self.adb_path} -s {self.device} shell input keyevent 223"
-
-        info = {}
-
-        if self.device is None:
-
-            p1 = subprocess.Popen(
-                quench,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                quenchs,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
-
-        try:
-            rd = output.decode().split(" ")
-            sx = [x for x in rd if x != ""]
-            for x in sx:
-                dr = x.split("=")
-                k = dr[0]
-                v = dr[-1].strip("\r\n")
-                if k == "versionName":
-                    info[k] = v
-                    break
-        except:
-            pass
+        p2 = subprocess.Popen(
+            base64.b64decode(QUENCH)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device,
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p2.communicate()[0]
 
         return output.decode()
 
@@ -388,27 +367,16 @@ class Devices(InitBase):
         设备型号
         :return:
         """
-
-        unit_type = f"{self.adb_path} shell getprop ro.product.model"
-        unit_types = f"{self.adb_path} -s {self.device} shell getprop ro.product.model"
-
-        info = {}
-
-        if self.device is None:
-
-            p1 = subprocess.Popen(
-                unit_type,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                unit_types,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
+        p2 = subprocess.Popen(
+            base64.b64decode(GET_PROP_ID)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device,
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p2.communicate()[0]
 
         return output.decode()
 
@@ -418,24 +386,16 @@ class Devices(InitBase):
         :return:
         """
 
-        battery = f"{self.adb_path} shell dumpsys battery"
-        batterys = f"{self.adb_path} -s {self.device} shell dumpsys battery"
-
-        if self.device is None:
-
-            p1 = subprocess.Popen(
-                battery,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                batterys,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
+        p2 = subprocess.Popen(
+            base64.b64decode(BATTERY)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p2.communicate()[0]
 
         return output.decode()
 
@@ -464,24 +424,17 @@ class Devices(InitBase):
         :return:
         """
 
-        density = f"{self.adb_path} shell wm density"
-        densitys = f"{self.adb_path} -s {self.device} shell wm density"
 
-        if self.device is None:
-
-            p1 = subprocess.Popen(
-                density,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                densitys,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
+        p2 = subprocess.Popen(
+            base64.b64decode(DENSITY)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p2.communicate()[0]
 
         return output.decode()
 
@@ -491,24 +444,17 @@ class Devices(InitBase):
         :return:
         """
 
-        get_android_id = f"{self.adb_path} shell settings get secure android_id"
-        get_android_ids = f"{self.adb_path} -s {self.device} shell settings get secure android_id"
+        p1 = subprocess.Popen(
+            base64.b64decode(GET_ANDROID_ID)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p1.communicate()[0]
 
-        if self.device is None:
-
-            p1 = subprocess.Popen(
-                get_android_id,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                get_android_ids,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
 
         return output.decode()
 
@@ -518,24 +464,18 @@ class Devices(InitBase):
         :return:
         """
 
-        get_imel = f"{self.adb_path} shell service call iphonesubinfo 1 | cut -c 52-66 | tr -d '.[:space:]'"
-        get_imels = f"{self.adb_path} -s {self.device} shell service call iphonesubinfo 1 | cut -c 52-66 | tr -d '.[:space:]'"
 
-        if self.device is None:
 
-            p1 = subprocess.Popen(
-                get_imel,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                get_imels,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
+        p2 = subprocess.Popen(
+            base64.b64decode(GET_IMEL)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p2.communicate()[0]
 
         return output.decode()
 
@@ -545,24 +485,16 @@ class Devices(InitBase):
         :return:
         """
 
-        get_phone = f"{self.adb_path} shell service call iphonesubinfo 18 | cut -c 52-66 | tr -d '.[:space:]+'"
-        get_phones = f"{self.adb_path} -s {self.device} shell service call iphonesubinfo 18 | cut -c 52-66 | tr -d '.[:space:]+'"
-
-        if self.device is None:
-
-            p1 = subprocess.Popen(
-                get_phone,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                get_phones,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
+        p2 = subprocess.Popen(
+            base64.b64decode(GET_PHONE)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p2.communicate()[0]
 
         return output.decode()
 
@@ -571,110 +503,53 @@ class Devices(InitBase):
         获取设备序列号
         :return:
         """
-
-        get_phone = f"{self.adb_path} shell getprop ro.serialno"
-        get_phones = f"{self.adb_path} -s {self.device} shell getprop ro.serialno"
-
-        if self.device is None:
-
-            p1 = subprocess.Popen(
-                get_phone,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                get_phones,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
+        p2 = subprocess.Popen(
+            base64.b64decode(GET_SERIALNO)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p2.communicate()[0]
 
         return output.decode()
-
 
     def ip(self):
         """
         获取设备ip
         :return:
         """
-        # adb shell
 
-        get_ip = f"{self.adb_path} shell 'ifconfig | grep Mask'"
-        get_ips = f"{self.adb_path} -s {self.device} shell 'ifconfig | grep Mask'"
+        p2 = subprocess.Popen(
+            base64.b64decode(GET_IP)
+                .decode()
+                .format(adb_path=self.adb_path,device=self.device),
+            stdout=subprocess.PIPE,
+            shell=True,
+        )
+        output = p2.stdout.read().decode()
 
-        if self.device is None:
+        return output
 
-            p1 = subprocess.Popen(
-                get_ip,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                get_ips,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
-
-        return output.decode()
-
-    def android_version(self):
-        """
-        获取设备Android系统版本
-        :return:
-        """
-
-        android_version = f"{self.adb_path} shell getprop ro.build.version.release"
-        android_versions= f"{self.adb_path} -s {self.device} shell getprop ro.build.version.release"
-
-        if self.device is None:
-
-            p1 = subprocess.Popen(
-                android_version,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                android_versions,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
-
-        return output.decode()
-
-    def mac_address(self):
-        """
-        查看mac地址
-        :return:
-        """
-
-        mac_address = f"{self.adb_path} shell cat /sys/class/net/wlan0/address"
-        mac_addressd = f"{self.adb_path} -s {self.device} shell cat /sys/class/net/wlan0/addresse"
-
-        if self.device is None:
-
-            p1 = subprocess.Popen(
-                mac_address,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                mac_addressd,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
-
-        return output.decode()
+    # def mac_address(self):
+    #     """
+    #     查看mac地址
+    #     :return:
+    #     """
+    #     p2 = subprocess.Popen(
+    #         base64.b64decode(CAT_MAC_ADDRESS)
+    #             .decode()
+    #             .format(
+    #             adb_path=self.adb_path,
+    #             device=self.device
+    #         ),
+    #         stdout=subprocess.PIPE
+    #     )
+    #     output = p2.communicate()[0]
+    #
+    #     return output.decode()
 
 
     def cpu_info(self):
@@ -683,24 +558,16 @@ class Devices(InitBase):
         :return:
         """
 
-        get_cpu = f"{self.adb_path} shell cat /proc/cpuinfo"
-        get_cpus = f"{self.adb_path} -s {self.device} shell cat /proc/cpuinfo"
-
-        if self.device is None:
-
-            p1 = subprocess.Popen(
-                get_cpu,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                get_cpus,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
+        p2 = subprocess.Popen(
+            base64.b64decode(GET_CPU)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p2.communicate()[0]
 
         return output.decode()
 
@@ -713,7 +580,10 @@ class Devices(InitBase):
         """
 
         meminfo = f"{self.adb_path} shell cat /proc/meminfo"
-        meminfos = f"{self.adb_path} -s {self.device} shell cat /proc/meminfo"
+        meminfos = f""
+
+        # 查看内存信息
+        MEMINFO = b'{adb_path} {device} shell cat /proc/meminfo'
 
         if self.device is None:
 
@@ -972,6 +842,9 @@ class _AdbActivity(InitBase):
         :param driver:
         """
         super(_AdbActivity, self).__init__(device,driver=driver)
+        print("===>",device)
+        print("===>",driver)
+
 
 
 
@@ -1004,6 +877,16 @@ class _AdbActivity(InitBase):
 
     def install(self,apk):
         return Install(driver=self.adb_path,device=self.device,package_name=apk)
+
+    #
+    # @property
+    # def keyevent(self):
+    #     """
+    #     键盘
+    #     :return:
+    #     """
+    #     print(self.device)
+    #     return KeyboardOperation(device=device,driver=self.adb_path)
 
 
 
@@ -1242,6 +1125,119 @@ class Install:
             shell=True
         ).communicate()[0]
 
+
+
+key_code = KeyCode()
+
+
+# 键盘操作
+class KeyboardOperation(InitBase):
+    def __init__(self, device, driver="main"):
+        super(KeyboardOperation, self).__init__(device=device, driver=driver)
+
+    def home(self):
+        """
+        home键
+        :return:
+        """
+        xd = subprocess.Popen(
+            base64.b64decode(KEYEVENT_KEY)
+                .decode()
+                .format(
+                adb=self.adb_path,
+                device=self.device,
+                keycode=KeyCode.HOME
+            ),
+            stdout=subprocess.PIPE,
+            shell=True
+        )
+        return self.home
+
+    def open_dial(self):
+        """
+        # Open the Dial application 打开拨号应用
+         = 5
+        :return:
+        """
+        xd = subprocess.Popen(
+            base64.b64decode(KEYEVENT_KEY)
+                .decode()
+                .format(
+                adb=self.adb_path,
+                device=self.device,
+                keycode=KeyCode.OPEN_DIAL_APPLICATION
+            ),
+            stdout=subprocess.PIPE,
+            shell=True
+        )
+        return self.open_dial
+
+    def hang_up(self):
+        """
+                # hang up 挂断电话
+         = 6
+        :return:
+        """
+        xd = subprocess.Popen(
+            base64.b64decode(KEYEVENT_KEY)
+                .decode()
+                .format(
+                adb=self.adb_path,
+                device=self.device,
+                keycode=KeyCode.HANG_UP
+            ),
+            stdout=subprocess.PIPE,
+            shell=True
+        )
+        return self.hang_up
+
+    def open_browser(self):
+        """
+          # open browser
+        :return:
+        """
+        xd = subprocess.Popen(
+            base64.b64decode(KEYEVENT_KEY)
+                .decode()
+                .format(
+                adb=self.adb_path,
+                device=self.device,
+                keycode=KeyCode.OPEN_BROWSER
+            ),
+            stdout=subprocess.PIPE,
+            shell=True
+        )
+        return self.open_browser
+
+
+    def back(self):
+        """
+        返回上一页面
+        :return:
+        """
+        xd = subprocess.Popen(
+            base64.b64decode(KEYEVENT_KEY)
+                .decode()
+                .format(
+                adb=self.adb_path,
+                device=self.device,
+                keycode=KeyCode.CLICK_BACK
+            ),
+            stdout=subprocess.PIPE,
+            shell=True
+        )
+        return self.back
+
+
+
+
+
+#     base64.b64decode(KEYEVENT_KEY).decode().format(adb="adb",device="ssefc",keycode="666")
+
+
+
+
+
 class AppPackage(InitBase):
 
     def __init__(self,device,driver="main"):
@@ -1301,28 +1297,37 @@ class AppPackage(InitBase):
 
 
 
-    def run(self,package,activity):
+    def run(self,*args):
         """
         启动app
-        :param package:
-        :param activity:
+        :param package: 第一参数为 package
+        :param activity:第二参数为 package
         :return:
         """
+        print(args)
+        print(  base64.b64decode(RUN_APP)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device,
+                package=args[0],
+                activity=args[1]
+            ),)
         xt = subprocess.Popen(
             base64.b64decode(RUN_APP)
                 .decode()
                 .format(
                 adb_path=self.adb_path,
                 device=self.device,
-                package=package,
-                activity=activity
+                package=args[0],
+                activity=args[1]
             ),
             stdout=subprocess.PIPE,
             shell=True
         )
         kt = xt.stdout.read().decode("utf-8")
         xt.kill()
-        setattr(self,"current_app",package)
+        setattr(self,"current_app",args[0])
         return AppPackage.run
 
     def quit(self):

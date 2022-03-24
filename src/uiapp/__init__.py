@@ -13,22 +13,23 @@ __all__ = [
 ]
 
 
-from src.uiapp.main import (
+from src.uiapp.driver.app import (
     start,ChainedElement
 )
 
 
-from src.uiapp.common.element import (
+from uiapp.common.element import (
     ElementBase,Event,UiInit
 )
 
-from src.uiapp.common._exception import (
+from uiapp.common._exception import (
     TextElementException,
 )
 
-from src.uiapp.driver.android import (
-    _AdbActivity, Devices, AppPackage,InitBase
+from uiapp.driver.android import (
+    _AdbActivity, Devices, AppPackage,InitBase,
 )
+
 
 
 

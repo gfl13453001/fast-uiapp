@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: uiapp
+Version: 1.0.1
+Summary: 轻量型APP自动化测试框架
+Home-page: https://github.com/gfl13453001/testframework.git
+Author: guanfl
+Author-email: gfl13453001@163.com
+License: UNKNOWN
+Description: 
+        # uiapp
+        
+        **轻量级APP自动化测试框架、解决APP自动化测试环境配置及搭建复杂的问题、开箱即用的测试框架**
+        
+        
+        ## 示例代码-1
+        ```python
+        
+        from uiapp import start
+        
+        app = start()
+        app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity')
+        
+        ```
+        上述代码就是启动一个app的操作、首先启动start方法进行启动adb、run方法用于启动一个指定的APP。
+        
+        
+        
+        
+Keywords: 自动化测试 app python  unittest
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown

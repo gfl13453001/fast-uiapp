@@ -8,3 +8,6 @@ pip show easyocr
 Name: easyocr
 Version: x
 
+
+文档生成
+python -m pydoc -w android

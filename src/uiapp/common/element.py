@@ -1,16 +1,20 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-# authors:guanfl
 # 2021/8/5
+
+
 import base64
 import re
 import subprocess
-import time
 
-from src.uiapp.common._exception import (
+
+from uiapp.common._exception import (
     TextElementException, IDElementException, ClassElementException, CoordElementException
 )
+
+from src.uiapp.core.license import *
+
 try:
     import xml.etree.cElementTree as ET
 except ImportError:
@@ -279,30 +283,43 @@ class Event(InitBase):
     def package(self):
         return self.package
 
-    def _touch(self,dx, dy):
+    def __touch(self,dx, dy):
         """
         触摸事件
         usage: touch(500, 500)
         """
 
-        touch_event = f"{self.adb_path}  shell input tap {dx}  {dy}" if self.device is None else \
-            f"{self.adb_path} -s {self.devices} shell input tap {dx}  {dy}"
-        print(touch_event)
-
-
+        touch_event =  base64.b64decode(CLICK_ON)\
+            .decode()\
+            .format(
+            adb_path=self.adb_path,
+            device=self.device,
+            dx=dx,
+            dy=dy
+        )
         subprocess.Popen(touch_event)
-        return Event._touch
+        return Event.__touch
 
-    def _swipe(self,startX,startY,endX,endY,timeToSwipe):
+    def __swipe(self,startX,startY,endX,endY,timeToSwipe):
         """
         滑动
         usage: touch(500, 500)
         """
-        touch_event = f"{self.adb_path}  shell input swipe  {startX}  {startY} {endX} {endY} {timeToSwipe}" if self.device is None else \
-            f"{self.adb_path} -s {self.devices} shell input swipe  {startX}  {startY} {endX} {endY} {timeToSwipe}"
+        subprocess.Popen(
+            base64.b64decode(TOUCH_EVENT)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                devices=self.device,
+                startX=startX,
+                startY=startY,
+                endX=endX,
+                endY=endY,
+                timeToSwipe=timeToSwipe
+            )
 
-        subprocess.Popen(touch_event)
-        return Event._touch
+        )
+        return Event.__touch
 
     def slide(self,ex,ey,sx=None,sy=None,timeout=500):
         """
@@ -315,9 +332,9 @@ class Event(InitBase):
         :return:
         """
         if sx is None and sy is None:
-            self._swipe(startX=self.el[0], startY=self.el[1], endX=ex, endY=ey, timeToSwipe=timeout)
+            self.__swipe(startX=self.el[0], startY=self.el[1], endX=ex, endY=ey, timeToSwipe=timeout)
         else:
-            self._swipe(startX=sx, startY=sy, endX=ex, endY=ey, timeToSwipe=timeout)
+            self.__swipe(startX=sx, startY=sy, endX=ex, endY=ey, timeToSwipe=timeout)
         return Event.slide
 
     def click(self):
@@ -325,7 +342,7 @@ class Event(InitBase):
         点击
         :return:
         """
-        self._touch(dx=self.el[0],dy=self.el[1])
+        self.__touch(dx=self.el[0],dy=self.el[1])
         return Event.click
 
     def clicks(self,e):
@@ -334,7 +351,7 @@ class Event(InitBase):
         :param e:
         :return:
         """
-        self._touch(dx=e[0],dy=e[1])
+        self.__touch(dx=e[0],dy=e[1])
         return Event.click
 
 
@@ -344,13 +361,14 @@ class Event(InitBase):
         当前焦点控件进行输入文本内容
         usage: touch(500, 500)
         """
-        if self.device is None:
-            return subprocess.Popen(
-                rf'{self.adb_path}  shell am broadcast -a ADB_INPUT_B64 --es msg "{val}"',
-                            )
-        else:
-            return subprocess.Popen(
-                rf'{self.adb_path} -s {self.device} shell am broadcast -a ADB_INPUT_B64 --es msg "{val}"',
-                            )
 
+        return subprocess.Popen(
+            base64.b64decode(SEND_KEYS_VAL)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device,
+                val=val
+            )
+        )
 
