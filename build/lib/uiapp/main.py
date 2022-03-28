@@ -10,11 +10,11 @@ import subprocess
 import sys
 import time
 
-from src.uiapp.common._exception import (
+from uiapp.common._exception import (
     InfoValueException, NotMethodException
 )
-from src.uiapp.common.element import ElementBase,Event
-from src.uiapp.driver.android import (
+from uiapp.common.element import ElementBase,Event
+from uiapp.driver.android import (
     _AdbActivity, Devices, AppPackage, NetStat, Monkey,
     # Resource,
 )

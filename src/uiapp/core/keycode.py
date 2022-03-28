@@ -31,6 +31,9 @@ class  KeyCode:
 
         CLICK_BACK = "BACK"
 
+        # 电源
+        POWER = 26
+
         # backspace key退格键
         BACKSPACE_KEY = 67
 
@@ -40,6 +43,9 @@ class  KeyCode:
 
         # 82	menu key
         MENU_KEY = 82
+
+        # 84 搜索键
+        KEYCODE_SEARCH = 84
 
         # 85	播放/暂停
         # play / pause

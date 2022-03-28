@@ -344,17 +344,6 @@ class Event(InitBase):
         self.__touch(dx=self.el[0],dy=self.el[1])
         return Event.click
 
-    def clicks(self,e):
-        """
-        点击
-        :param e:
-        :return:
-        """
-        self.__touch(dx=e[0],dy=e[1])
-        return Event.click
-
-
-
     def value(self,val):
         """
         当前焦点控件进行输入文本内容

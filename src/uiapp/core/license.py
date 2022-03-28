@@ -73,10 +73,11 @@ KEY_PACKAGE_INSTALL = b'e2FkYl9wYXRofSB7ZGV2aWNlfSAgaW5zdGFsbCAgLXIgLWQge2luc3Rh
 # {adb_path} {device}  install  -r -d {install_app_path}
 #
 # 设置默认的输入法
-SET_KEY_PACKAGE = b'e2FkYl9wYXRofSB7ZGV2aWNlfSBzaGVsbCBpbWUgc2V0IGNvbS5hbmRyb2lkLmFkYmtleWJvYXJkLy5BZGJJTUU='
-# {adb_path} {device}  install  -r -d {install_app_path}
+SET_KEY_PACKAGE = b'e2FkYl9hcHB9IHtkZXZpY2V9IHNoZWxsIGltZSBzZXQge3BhY2thZ2V9'
+# {adb_app} {device} shell ime set {package}
 
-#
+
+# {adb_path} {device}  install  -r -d {install_app_path}
 CLOSE_CURRENT_APP = b'e2FkYl9wYXRofSB7ZGV2aWNlfSAgc2hlbGwgYW0gZm9yY2Utc3RvcCB7cGFja2FnZX0='
 # {adb_path} {device}  shell am force-stop {package}
 
@@ -254,6 +255,18 @@ SCREENCAP_PULL= b'e2FkYl9wYXRofSAge2RldmljZX0gIHB1bGwgL3NkY2FyZC9zY3JlZW5zaG90Ln
 # GET_PRODUCT_NAME = b'{adb_path} {device} shell getprop ro.product.brand'
 GET_PRODUCT_NAME = b'e2FkYl9wYXRofSB7ZGV2aWNlfSBzaGVsbCBnZXRwcm9wIHJvLnByb2R1Y3QuYnJhbmQ='
 
+# 系统安装的所有输入法
+# GET_ALL_LIST_IME = b'{driver}  {device} shell ime list -s'
+GET_ALL_LIST_IME = b'e2RyaXZlcn0gIHtkZXZpY2V9IHNoZWxsIGltZSBsaXN0IC1z'
+
+# 保存常亮
+# b'{adb_path} {driver} shell svc power stayon true'
+NORMALLY = b'e2FkYl9wYXRofSB7ZHJpdmVyfSBzaGVsbCBzdmMgcG93ZXIgc3RheW9uIHRydWU='
+CLEAR = b'e2FkYl9wYXRofSB7ZHJpdmVyfSBzaGVsbCBzdmMgcG93ZXIgc3RheW9uIGZhbHNl'
+
+# 电源键
+KEYEVENT_POWER = b'e2FkYl9wYXRofSB7ZGV2aWNlfSBzaGVsbCBpbnB1dCBrZXlldmVudCAyNg=='
+# b'{adb_path} {device} shell input keyevent 26'
 
 if __name__ == '__main__':
 
@@ -261,7 +274,7 @@ if __name__ == '__main__':
 
 
     # x = bytes(MEMORYINFO_TO_S, encoding="utf-8")
-    x = GET_PRODUCT_NAME
+    x = KEYEVENT_POWER
     m = base64.b64encode(x)
     print(m)
     print(

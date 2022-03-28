@@ -15,14 +15,14 @@ from src.uiapp.common._exception import (
 )
 from src.uiapp.common.element import ElementBase
 from src.uiapp.driver.android import (
-    _AdbActivity, NetStat, Monkey, KeyboardOperation, Resource, Devices, AppPackage
+    _AdbActivity, NetStat, Monkey, Resource, Devices, SVC
 )
 from src.uiapp.driver.main import ApplicationPackage
 
 
 class Device(
-    ApplicationPackage,Devices,ElementBase,NetStat,
-    Monkey,KeyboardOperation,_AdbActivity,Resource
+    ApplicationPackage,Devices,ElementBase,NetStat,SVC,
+    Monkey,_AdbActivity,Resource
 ):    """Device object"""
 
 

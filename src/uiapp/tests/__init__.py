@@ -6,22 +6,57 @@
 import os
 import time
 
-import uiautomator2
+
 
 from src.uiapp import start
 
 
 app = start()
-# print(app.uninstall("com"))
+#
+# # 清理应用程序的缓存及数据
+# print(app.current_package_info())
+# # 启动app
+app.run('com.jideos.jnotes', 'com.jideos.module_main.pad.ui.activity.NoteListActivity')
+
+# 使用文本元素定位
+# app.element_by_text(text="QQ音乐HD")
+# 使用resourceId元素定位
+app.element_by_id(id="com.jideos.jnotes:id/add_note").text()
+# 采用坐标定位
+app.element_by_coord(487,1165).index()
+# 使用className元素定位
+app.element_by_class("android.widget.RadioButton").click()
+
+# 使用文本元素定位一组控件
+app.elements_by_text("QQ音乐HD")
+# 使用className元素定位一组控件
+app.elements_by_class("android.widget.RadioButton")
+
+
+# 退出应用程序
+# app.quit()
+
+
+
+
+# print(app.unin"192.168.19.180:5555stall("com"))
 # E:\file\docs\note_apk\app-release.apk
 # print(app.install(r"E:\file\docs\note_apk\app-release.apk").default())
-# 获取系统默认输入法
-app.inputmethod.get_setting_default()
+
+#  设置指定的默认输入法
+# print(app.keyevent.search())
+
+# # 进行默认卸载
+# app.uninstall.default(package_name="com.jideos.jnotes")
+# # 卸载程序但不清理应用数据
+# app.uninstall.k("com.jideos.jnotes")
+# app.install(r"E:\file\docs\app-release-2.1.4.1-内测.apk").default()
+# print(app.current_package_info())
 
 #恢复系统默认输入法
-app.inputmethod.set_sys_default()
-
-print(app.product_name())
+# print(app.inputmethod.set_sys_default())
+#
+# print(app.product_name())
 
 
 # print(app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity'))
