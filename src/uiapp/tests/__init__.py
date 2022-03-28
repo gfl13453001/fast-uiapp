@@ -6,20 +6,44 @@
 import os
 import time
 
+import uiautomator2
+
 from src.uiapp import start
 
 
 app = start()
-app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity')
+# print(app.uninstall("com"))
+# E:\file\docs\note_apk\app-release.apk
+# print(app.install(r"E:\file\docs\note_apk\app-release.apk").default())
+# 获取系统默认输入法
+app.inputmethod.get_setting_default()
+
+#恢复系统默认输入法
+app.inputmethod.set_sys_default()
+
+print(app.product_name())
+
+
+# print(app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity'))
+# print(app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity'))
+# app.slide_to_unlock()
+# app.element_by_id(id="com.ss.android.article.news:id/a1x").click()
+
+# app.element_by_id(id="com.example.jideailicense:id/btn_discern").click()
+# app.element_by_id(id="com.example.jideailicense:id/btn_request_license").click()
+
+# print(app.get_app_path("com.example.jideailicense"))
+# print(app.get_package())
+# print(app.current_package_info())
 
 
 # app.element_by_text("请求授权").click()
-
-
+# print(app.get_package())
 #
-print(app.shaker())
 
+# x = uiautomator2
 
+# .stop()
 # 启动app
 # app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity')
 # app.element_by_text("请求授权").click()

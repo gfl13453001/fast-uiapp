@@ -10,10 +10,12 @@ name = "uiapp"
 #
 # coding: utf-8
 #
-from uiapp import start
+# from uiapp import start
+#
+#
+# app = start()
+# app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity')
+#
+# print(app.package_list())
 
-app = start()
 
-app.quench()
-app.home()
-app.back()

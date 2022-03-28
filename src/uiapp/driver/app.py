@@ -13,17 +13,27 @@ import time
 from src.uiapp.common._exception import (
     InfoValueException, NotMethodException
 )
-from src.uiapp.common.element import ElementBase,Event
+from src.uiapp.common.element import ElementBase
 from src.uiapp.driver.android import (
-    _AdbActivity, Devices, AppPackage, NetStat, Monkey,KeyboardOperation
-    # Resource,
+    _AdbActivity, NetStat, Monkey, KeyboardOperation, Resource, Devices, AppPackage
 )
+from src.uiapp.driver.main import ApplicationPackage
 
 
-class Device(AppPackage,Devices,ElementBase,NetStat,Monkey,
-             KeyboardOperation,
-             _AdbActivity):
-    """Device object"""
+class Device(
+    ApplicationPackage,Devices,ElementBase,NetStat,
+    Monkey,KeyboardOperation,_AdbActivity,Resource
+):    """Device object"""
+
+
+# from src.uiapp.driver.android import (
+#     _AdbActivity, Devices, AppPackage, NetStat, Monkey,KeyboardOperation
+#     # Resource,
+# )
+
+
+# class Device(ApplicationPackage,Devices,ElementBase,NetStat,Monkey,
+#              KeyboardOperation,_AdbActivity):
 
 
 # 为兼容低版本语法

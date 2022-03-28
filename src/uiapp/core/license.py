@@ -76,7 +76,7 @@ KEY_PACKAGE_INSTALL = b'e2FkYl9wYXRofSB7ZGV2aWNlfSAgaW5zdGFsbCAgLXIgLWQge2luc3Rh
 SET_KEY_PACKAGE = b'e2FkYl9wYXRofSB7ZGV2aWNlfSBzaGVsbCBpbWUgc2V0IGNvbS5hbmRyb2lkLmFkYmtleWJvYXJkLy5BZGJJTUU='
 # {adb_path} {device}  install  -r -d {install_app_path}
 
-# 设置默认的输入法
+#
 CLOSE_CURRENT_APP = b'e2FkYl9wYXRofSB7ZGV2aWNlfSAgc2hlbGwgYW0gZm9yY2Utc3RvcCB7cGFja2FnZX0='
 # {adb_path} {device}  shell am force-stop {package}
 
@@ -127,6 +127,9 @@ GET_ANDROID_VERSION = b'e2FkYl9wYXRofSAge2RldmljZX0gc2hlbGwgZ2V0cHJvcCByby5idWls
 
 # 安装
 # {adb_path} {device} install -r {app_path}
+# 默认安装
+DEFAULT_INSTALL= b'e2FkYl9wYXRofSB7ZGV2aWNlfSBpbnN0YWxsICB7YXBwX3BhdGh9'
+# DEFAULT_INSTALL= b"{adb_path} {device} install  {app_path}"
 INSTALL_APP_R = b'e2FkYl9wYXRofSAge2RldmljZX0gaW5zdGFsbCAtciB7YXBwX3BhdGh9'
 # t
 INSTALL_APP_T = b'e2FkYl9wYXRofSB7ZGV2aWNlfSBpbnN0YWxsIC10IHthcHBfcGF0aH0='
@@ -210,6 +213,47 @@ TOUCH_EVENT =  b'e2FkYl9wYXRofSB7ZGV2aWNlc30gc2hlbGwgaW5wdXQgc3dpcGUgIHtzdGFydFh
 SEND_KEYS_VAL = b'e2FkYl9wYXRofSAge2RldmljZX0gc2hlbGwgYW0gYnJvYWRjYXN0IC1hIEFEQl9JTlBVVF9CNjQgLS1lcyBtc2cgInt2YWx9Ig=='
 # '{self.adb_path} -s {self.device} shell am broadcast -a ADB_INPUT_B64 --es msg "{val}"',
 
+# 获取进程信息
+# win
+# GET_PROCESS =  b'e2FkYl9wYXRofSAge2RldmljZX0gc2hlbGwgcHN8ZmluZHN0ciB7ZmluZHN0cn0='
+GET_PROCESS =  b'e2FkYl9wYXRofSAge2RldmljZX0gc2hlbGwgcHN8Z3JlcCB7ZmluZHN0cn0='
+# b'{adb_path}  {device} shell ps|grep {findstr}'
+# adb shell ps|findstr ui
+
+# 获取所有进程
+GET_PROCESS_ALL = b'e2FkYl9wYXRofSB7ZGV2aWNlfSBzaGVsbCBwcw=='
+# GET_PROCESS_ALL = b'{adb_path} {device} shell ps'
+
+#卸载应用
+UNINSTALL_PACKAGE = b'e2FkYl9wYXRofSB7ZGV2aWNlfSAgdW5pbnN0YWxsIHthcHBfcGFja2FnZX0='
+# UNINSTALL_PACKAGE = b"{adb_path} {device}  uninstall {app_package}"
+#卸载是不进行清理应用数据
+UNINSTALL_DATA = b'e2FkYl9wYXRofSB7ZGV2aWNlfSAgdW5pbnN0YWxsIC1rIHthcHBfcGFja2FnZX0='
+# UNINSTALL_DATA = b"{adb_path} {device}  uninstall -k {app_package}"
+
+#显示网络
+VIEW_DEVICE_NETSTAT = b'e2FkYl9wYXRofSB7ZGV2aWNlfSBzaGVsbCBuZXRzdGF0'
+# VIEW_DEVICE_NETSTAT = b'{adb_path} {device} shell netstat'
+
+#显示网络保存信息
+VIEW_DEVICE_NETSTAT_SAVE= b'e2FkYl9wYXRofSB7ZGV2aWNlfSBzaGVsbCBuZXRzdGF0PntmaWxlcGF0aH0='
+# b'{adb_path} {device} shell netstat>{filepath}'
+# {adb_path} {device} shell  /system/bin/screencap -p /sdcard/screenshot.png
+#截图保存到设备
+SCREENCAP_DEVICE= b'e2FkYl9wYXRofSB7ZGV2aWNlfSBzaGVsbCAgL3N5c3RlbS9iaW4vc2NyZWVuY2FwIC1wIC9zZGNhcmQvc2NyZWVuc2hvdC5wbmc='
+# SCREENCAP_DEVICE= b'{adb_path} {device} shell  /system/bin/screencap -p /sdcard/screenshot.png'
+# b'{adb_path} {device} shell netstat>{filepath}'
+# {adb_path}  {device}  pull /sdcard/screenshot.png {path}
+#拉取图片到本地
+SCREENCAP_PULL= b'e2FkYl9wYXRofSAge2RldmljZX0gIHB1bGwgL3NkY2FyZC9zY3JlZW5zaG90LnBuZyB7cGF0aH0='
+# SCREENCAP_PULL= b'{adb_path}  {device}  pull /sdcard/screenshot.png {path}'
+
+# adb -d shell getprop ro.product.brand
+# 获取产品生产商名字
+
+# GET_PRODUCT_NAME = b'{adb_path} {device} shell getprop ro.product.brand'
+GET_PRODUCT_NAME = b'e2FkYl9wYXRofSB7ZGV2aWNlfSBzaGVsbCBnZXRwcm9wIHJvLnByb2R1Y3QuYnJhbmQ='
+
 
 if __name__ == '__main__':
 
@@ -217,9 +261,9 @@ if __name__ == '__main__':
 
 
     # x = bytes(MEMORYINFO_TO_S, encoding="utf-8")
-    x = SEND_KEYS_VAL
+    x = GET_PRODUCT_NAME
     m = base64.b64encode(x)
     print(m)
     print(
-        base64.b64decode(SEND_KEYS_VAL).decode().format(adb_path="adb",device="ssefc",val=1)
+        base64.b64decode(UNINSTALL_PACKAGE).decode().format(adb_path="adb",device="ssefc",findstr=1,val=1)
     )

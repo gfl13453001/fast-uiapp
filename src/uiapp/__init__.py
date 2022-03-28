@@ -18,15 +18,15 @@ from src.uiapp.driver.app import (
 )
 
 
-from uiapp.common.element import (
+from src.uiapp.common.element import (
     ElementBase,Event,UiInit
 )
 
-from uiapp.common._exception import (
+from src.uiapp.common._exception import (
     TextElementException,
 )
 
-from uiapp.driver.android import (
+from src.uiapp.driver.android import (
     _AdbActivity, Devices, AppPackage,InitBase,
 )
 

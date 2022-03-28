@@ -98,11 +98,13 @@ src/uiapp/driver/__init__.py
 src/uiapp/driver/_uiexec.py
 src/uiapp/driver/android.py
 src/uiapp/driver/app.py
+src/uiapp/driver/main.py
 src/uiapp/driver/monkey.py
 src/uiapp/driver/__pycache__/__init__.cpython-39.pyc
 src/uiapp/driver/__pycache__/_uiexec.cpython-39.pyc
 src/uiapp/driver/__pycache__/android.cpython-39.pyc
 src/uiapp/driver/__pycache__/app.cpython-39.pyc
+src/uiapp/driver/__pycache__/main.cpython-39.pyc
 src/uiapp/driver/__pycache__/monkey.cpython-39.pyc
 src/uiapp/tests/__init__.py
 src/uiapp/tests/result.txt

@@ -11,6 +11,7 @@ import time
 import os
 import sys
 
+from src.uiapp.common._exception import PackageNotException
 from src.uiapp.core.keycode import KeyCode
 from src.uiapp.core.license import *
 from src.uiapp.driver.monkey import MonkeyEvent
@@ -28,7 +29,6 @@ class InitBase(object):
         :param devices:
         :param driver:
         """
-        print(111,device)
         if device is None:
             self.device = ""
         else:
@@ -45,7 +45,6 @@ class InitBase(object):
         get_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         base = os.path.join(get_dir, base64.b64decode(ADB_JOIN_PATH).decode()).replace("\\", "/")
         self.adb_path = base if driver == "main" else driver
-
 
     def setup(self):
         """
@@ -74,12 +73,23 @@ class InitBase(object):
             self.__keypackage_install()
             self.__set_keypackage()
 
-
-
-    def __dump_ui(self) :
+    def __dump_ui(self):
         """
         :return:
         """
+        if self.__process("com.github.uiautomator"):
+
+            subprocess.Popen(
+                base64.b64decode(UNINSTALL_PACKAGE)
+                    .decode()
+                    .format(
+                    adb_path=self.adb_path,
+                    device=self.device,
+                    app_package="com.github.uiautomator"
+            )).wait()
+            print(666)
+            time.sleep(1)
+
 
         shell = base64.b64decode(UIAUTOMATOR_X)\
             .decode()\
@@ -90,13 +100,11 @@ class InitBase(object):
         )
         subprocess.Popen(shell).wait()
 
-
     def __rm_appui(self):
         """
 
         :return:
         """
-
         shell = base64.b64decode(RM_UI) \
             .decode() \
             .format(
@@ -106,13 +114,12 @@ class InitBase(object):
 
         subprocess.Popen(shell).wait()
 
-
-
     def __pull_file(self):
         """
         拉取ui
         :return:
         """
+        # app.process("com")
         shell = base64.b64decode(PULL_LOCAL_FILE_X)\
             .decode()\
             .format(
@@ -123,7 +130,6 @@ class InitBase(object):
         )
 
         return subprocess.Popen(shell).wait()
-
 
     def __page_activity(self):
         if self.device is None:
@@ -141,10 +147,41 @@ class InitBase(object):
             )
             output = p2.communicate()[0]
 
-
         return str(output).split("=")[-1][:-5]
 
-    #
+    def __process(self, findstr=None):
+        """
+        获取后台进程,
+        :param pname:
+        :return:
+        """
+        if findstr:
+            package = findstr
+        else:
+            package = ''
+        p1 = subprocess.Popen(
+            base64.b64decode(GET_PROCESS)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                findstr=package,
+                device=self.device
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p1.communicate()[0].decode()
+        dt = []
+        xf = [x.rstrip() for s in output.split('\n') for x in s.split(" ") if x != '']
+        current = 0
+        for xd in range(len(xf) // 9):
+            xd += 1
+            dt.extend([xf[current:xd * 9]])
+            current += 9
+        try:
+            return None if len(dt) > 1 else dt[0]
+        except:
+            return None
+
     def __set_keypackage(self):
         """
         设置为默认的输入法
@@ -158,9 +195,6 @@ class InitBase(object):
                 device=self.device,
             ), stdout=subprocess.PIPE).wait()
 
-
-
-    # adb uninstall com.android.adbkeyboard
     def __keypackage_install(self):
         """
         初始化安装虚拟键盘、解决中文输入
@@ -177,17 +211,6 @@ class InitBase(object):
                 install_app_path=xt
             ), stdout=subprocess.PIPE).wait()
         return InitBase
-
-    def __get_default_inputmethod(self):
-        """
-        获取当前系统设置的默认输入法
-        :return:
-        """
-        # adb shell settings get secure default_input_method
-
-
-
-
 
 class Devices(InitBase):
     def __init__(self,device,driver="main"):
@@ -244,31 +267,31 @@ class Devices(InitBase):
                 x=x,y=y
             ), stdout=subprocess.PIPE, shell=True)
 
-
-    def screen(self,path,name):
+    def screen(self,path):
         """
-
+        截图
         :param path:
-        :param name:
         :return:
         """
-        size_shell = None
-        file = "screenshot.png"
-
-        if self.device is None:
-
-            size_shell = f"{self.adb_path}  shell  /system/bin/screencap -p /sdcard/{file}"
-            pull = f"{self.adb_path}    pull /sdcard/{file} {path}"
-            re = os.rename(rf"{path}\{file}",rf"{path}\{name}")
-        else:
-            size_shell = f"{self.adb_path} -s {self.device} shell /system/bin/screencap -p /sdcard/screenshot.png"
-            pull = f"{self.adb_path}    pull /sdcard/screenshot.png {path}"
-
-        xt = subprocess.Popen(size_shell, stdout=subprocess.PIPE, shell=True)
-        xx = subprocess.Popen(pull, stdout=subprocess.PIPE, shell=True)
-        get_content = xt.stdout.read().decode()
-
-        xts = get_content.replace("\r\n", "")
+        subprocess.Popen(
+            base64.b64decode(SCREENCAP_DEVICE)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device,
+            ),
+            stdout=subprocess.PIPE, shell=True
+        ).wait()
+        subprocess.Popen(
+            base64.b64decode(SCREENCAP_PULL)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device,
+                path=path
+            ),
+            stdout=subprocess.PIPE, shell=True
+        ).wait()
 
     def reset_size(self):
         """
@@ -464,8 +487,6 @@ class Devices(InitBase):
         :return:
         """
 
-
-
         p2 = subprocess.Popen(
             base64.b64decode(GET_IMEL)
                 .decode()
@@ -526,6 +547,20 @@ class Devices(InitBase):
             base64.b64decode(GET_IP)
                 .decode()
                 .format(adb_path=self.adb_path,device=self.device),
+            stdout=subprocess.PIPE,
+            shell=True,
+        )
+        output = p2.stdout.read().decode()
+
+        return output
+
+    #
+
+    def product_name(self):
+        p2 = subprocess.Popen(
+            base64.b64decode(GET_PRODUCT_NAME)
+                .decode()
+                .format(adb_path=self.adb_path, device=self.device),
             stdout=subprocess.PIPE,
             shell=True,
         )
@@ -604,8 +639,6 @@ class Devices(InitBase):
         return output.decode()
 
 
-
-
 class InputMethodBase:
 
     def __init__(self,device,driver):
@@ -641,6 +674,12 @@ class InputMethodBase:
         设置系统默认的输入法 安卓 AOSP
         :return:
         """
+        print(  base64.b64decode(SET_SYSTEM_DEFAULT)
+                .decode()
+                .format(
+                adb_path=self.driver,
+                device=self.device
+            ))
         return subprocess.Popen(
             base64.b64decode(SET_SYSTEM_DEFAULT)
                 .decode()
@@ -676,10 +715,8 @@ class InputMethodBase:
                                 stdout=subprocess.PIPE).wait()
 
 
-
 device_ = Devices
-# adb shell service call bluetooth_manager 6 //打开蓝牙
-# adb shell service call bluetooth_manager 9 //关闭蓝牙
+
 
 class NetStat(InitBase):
     """
@@ -693,48 +730,42 @@ class NetStat(InitBase):
         """
         super(NetStat, self).__init__(device, driver=driver)
 
-    def get_netstat(self,filepath=None):
-        get_netstat = f"{self.adb_path} shell netstat"
-        get_netstat_path = f"{self.adb_path} shell netstat>{filepath}"
-        get_netstats_file = f"{self.adb_path} -s {self.device} shell netstat>{filepath}"
-        get_netstats = f"{self.adb_path} -s {self.device} shell netstat "
-        if filepath is None:
-            """
-              获取网络信息
-            :param package_name:
-            :return:
-            """
-            if self.device is None :
+    @property
+    def netstat(self):
+        return BaseNetStat(device=self.device,driver=self.adb_path)
 
-                p1 = subprocess.Popen(
-                    get_netstat,
-                    stdout=subprocess.PIPE
-                )
-                output = p1.communicate()[0]
-            else:
-                p1 = subprocess.Popen(
-                    get_netstats,
-                    stdout=subprocess.PIPE
-                )
-                output = p1.communicate()[0]
 
-        else:
-            if self.device is None:
-                p2 = subprocess.Popen(
-                    get_netstat_path,
-                    stdout=subprocess.PIPE
-                )
-                output = p2.communicate()[0]
-            else:
+class BaseNetStat:
+    def __init__(self,device, driver):
+        self.device = device
+        self.driver =driver
 
-                p2 = subprocess.Popen(
-                    get_netstats_file,
-                    stdout=subprocess.PIPE
-                )
-                output = p2.communicate()[0]
+    def view(self):
+        """显示网络信息"""
+        p2 = subprocess.Popen(
+            base64.b64decode(VIEW_DEVICE_NETSTAT)
+                .decode()
+                .format(
+                adb_path=self.driver,
+                device=self.device,
+            ),
+            stdout=subprocess.PIPE
+        )
+        return p2.communicate()[0].decode()
 
-        return output.decode()
-
+    def save(self,filename):
+        p2 = subprocess.Popen(
+            base64.b64decode(VIEW_DEVICE_NETSTAT_SAVE)
+                .decode()
+                .format(
+                adb_path=self.driver,
+                device=self.device,
+                filepath=filename
+            ),
+            stdout=subprocess.PIPE,
+            shell=True
+        )
+        return p2.communicate()[0].decode()
 
 
 # class Monkey(_InitBase):
@@ -842,8 +873,6 @@ class _AdbActivity(InitBase):
         :param driver:
         """
         super(_AdbActivity, self).__init__(device,driver=driver)
-        print("===>",device)
-        print("===>",driver)
 
 
 
@@ -890,16 +919,14 @@ class _AdbActivity(InitBase):
 
 
 
-    def uninstall(self,app_package,parameters=None):
+    def uninstall(self,app_package):
         """
         :param app_path:
+        k卸载应用保留数据
         :return:
         """
-        x = "uninstall"
-        if parameters is None:
-            return subprocess.Popen(rf"{self.adb_path}  {x}  {app_package}").communicate()[0]
-        else:
-            return subprocess.Popen(rf"{self.adb_path}  {x} {parameters} {app_package}").communicate()[0]
+        return Uninstall()
+
 
 
     def _connect(self,ip):
@@ -1031,8 +1058,34 @@ class _AdbActivity(InitBase):
         :param tel:
         :return:
         """
+class Uninstall:
+    def __init__(self, device,driver=None):
+        self.device = device
+        self.driver = driver
 
+    def default(self,package_name):
+        return subprocess.Popen(
+            base64.b64decode(UNINSTALL_PACKAGE)
+                .decode()
+                .format(
+                adb_path=self.driver,
+                device=self.device,
+                app_package=package_name
+            ),
+            shell=True
+        ).wait()
 
+    def k(self,package_name):
+        return subprocess.Popen(
+            base64.b64decode(UNINSTALL_DATA)
+                .decode()
+                .format(
+                adb_path=self.driver,
+                device=self.device,
+                app_package=package_name
+            ),
+            shell=True
+        ).wait()
 
 class Install:
 
@@ -1040,6 +1093,18 @@ class Install:
         self.device = device
         self.driver = driver
         self.package_name = package_name
+
+    def default(self):
+        return subprocess.Popen(
+            base64.b64decode(DEFAULT_INSTALL)
+                .decode()
+                .format(
+                adb_path=self.driver,
+                device=self.device,
+                app_path=self.package_name
+            ),
+            shell=True
+        ).communicate()[0]
 
     def r(self):
         """
@@ -1129,7 +1194,6 @@ class Install:
 
 key_code = KeyCode()
 
-
 # 键盘操作
 class KeyboardOperation(InitBase):
     def __init__(self, device, driver="main"):
@@ -1140,7 +1204,7 @@ class KeyboardOperation(InitBase):
         home键
         :return:
         """
-        xd = subprocess.Popen(
+        subprocess.Popen(
             base64.b64decode(KEYEVENT_KEY)
                 .decode()
                 .format(
@@ -1209,13 +1273,12 @@ class KeyboardOperation(InitBase):
         )
         return self.open_browser
 
-
     def back(self):
         """
         返回上一页面
         :return:
         """
-        xd = subprocess.Popen(
+        subprocess.Popen(
             base64.b64decode(KEYEVENT_KEY)
                 .decode()
                 .format(
@@ -1229,23 +1292,13 @@ class KeyboardOperation(InitBase):
         return self.back
 
 
-
-
-
-#     base64.b64decode(KEYEVENT_KEY).decode().format(adb="adb",device="ssefc",keycode="666")
-
-
-
-
-
 class AppPackage(InitBase):
 
     def __init__(self,device,driver="main"):
         super(AppPackage, self).__init__(device=device,driver=driver)
 
 
-
-    def current_package_info(self):
+    def _current_package_info(self):
         """
         获取当前启动的app包的信息
         :return:
@@ -1261,21 +1314,21 @@ class AppPackage(InitBase):
         return tuple(xi[-1].split("/"))
 
 
-    def activity(self):
+    def _activity(self):
         """
         获取app activity
         :param packagename:
         :return:
         """
-        return self.current_package_info()[-1]
+        return self._current_package_info()[-1]
 
-    def get_package(self):
+    def _get_package(self):
         """
         :return:
         """
-        return self.current_package_info()[0]
+        return self._current_package_info()[0]
 
-    def package_list(self) -> list:
+    def _package_list(self) -> list:
         """
         获取安装包package
         :return:
@@ -1297,40 +1350,35 @@ class AppPackage(InitBase):
 
 
 
-    def run(self,*args):
+    def _run(self,*args):
         """
         启动app
         :param package: 第一参数为 package
         :param activity:第二参数为 package
         :return:
         """
-        print(args)
-        print(  base64.b64decode(RUN_APP)
-                .decode()
-                .format(
-                adb_path=self.adb_path,
-                device=self.device,
-                package=args[0],
-                activity=args[1]
-            ),)
-        xt = subprocess.Popen(
-            base64.b64decode(RUN_APP)
-                .decode()
-                .format(
-                adb_path=self.adb_path,
-                device=self.device,
-                package=args[0],
-                activity=args[1]
-            ),
-            stdout=subprocess.PIPE,
-            shell=True
-        )
-        kt = xt.stdout.read().decode("utf-8")
-        xt.kill()
-        setattr(self,"current_app",args[0])
-        return AppPackage.run
+        package,activity = args[-1]
 
-    def quit(self):
+        if self._is_package(package):
+            xt = subprocess.Popen(
+                base64.b64decode(RUN_APP)
+                    .decode()
+                    .format(
+                    adb_path=self.adb_path,
+                    device=self.device,
+                    package=package,
+                    activity=activity
+                ),
+                stdout=subprocess.PIPE,
+                shell=True
+            )
+            xt.stdout.read().decode("utf-8")
+            xt.kill()
+            return AppPackage._run
+        else:
+            raise PackageNotException('没有该应用程序,%s '%package)
+
+    def _quit(self):
         xt = subprocess.Popen(
             base64.b64decode(CLOSE_CURRENT_APP)
                 .decode()
@@ -1339,17 +1387,23 @@ class AppPackage(InitBase):
                 device=self.device,
                 package=getattr(self,"current_app")
             ), stdout=subprocess.PIPE,shell=True)
-        kt = xt.stdout.read().decode("utf-8")
+        xt.stdout.read().decode("utf-8")
         xt.kill()
 
-        return AppPackage.quit
+        return AppPackage._quit
 
-    def close(self,package):
+    def _close(self,package=None):
         """
         关闭启动的应用
         :param package:
         :return:
         """
+
+        if package:
+            package = package
+        else:
+            package = self._current_package_info()[0]
+
         xt = subprocess.Popen(
             base64.b64decode(CLOSE_CURRENT_APP)
                 .decode()
@@ -1358,11 +1412,11 @@ class AppPackage(InitBase):
                 device=self.device,
                 package=package
             ), stdout=subprocess.PIPE,shell=True)
-        kt = xt.stdout.read().decode("utf-8")
+        xt.stdout.read().decode("utf-8")
         xt.kill()
-        return AppPackage.close
+        return AppPackage._close
 
-    def package_path_list(self):
+    def _package_path_list(self):
         """
         获取设备安装的所有包路径
         :return:
@@ -1383,12 +1437,12 @@ class AppPackage(InitBase):
         for x in rt:
             pm_path = x.split("=")[0].split("package:")[-1].strip("\n")
             pm_package_name = x.split("=")[-1].strip("\n")
-            info[pm_path] = pm_package_name
+            info[pm_package_name] = pm_path
 
         xt.kill()
         return info
 
-    def is_package(self,package_name):
+    def _is_package(self,package_name):
         """
 
         :param package_name:
@@ -1413,12 +1467,17 @@ class AppPackage(InitBase):
         return  False
 
 
-    def get_version(self,package_name):
+    def _get_version(self,package_name):
         """
         获取设备安装的包版本号
         :param package_name:
         :return:
         """
+        if package_name:
+            package = package_name
+        else:
+            package = self._current_package_info()[0]
+
         info = {}
         p1 = subprocess.Popen(
             base64.b64decode(GET_APK_VERSION)
@@ -1426,7 +1485,7 @@ class AppPackage(InitBase):
                 .format(
                 adb_path=self.adb_path,
                 device=self.device,
-                package_name=package_name
+                package_name=package
             ),
             stdout=subprocess.PIPE
         )
@@ -1448,20 +1507,25 @@ class AppPackage(InitBase):
         return info
 
 
-    def clear_data(self,package_name):
+    def _clear_data(self,package_name):
+
 
         """
         清除应用数据与缓存
         :param package_name:
         :return:
         """
-        p1 = subprocess.Popen(
+        if package_name:
+            package = package_name
+        else:
+            package = self._current_package_info()[0]
+        subprocess.Popen(
             base64.b64decode(CLEAR_DATA)
                 .decode()
                 .format(
                 adb_path=self.adb_path,
                 device=self.device,
-                package_name=package_name
+                package_name=package
             ),
             stdout=subprocess.PIPE
         ).wait()
@@ -1469,21 +1533,24 @@ class AppPackage(InitBase):
         return 'ok'
 
 
-    # ====================================
-    def get_pmlist(self,package_name):
+    # ---------------------------------
+    def _get_pm_path(self,package_name):
 
         """
           获取指定包的路径
         :param package_name:
         :return:
         """
-
+        if package_name:
+            package = package_name
+        else:
+            package = self._current_package_info()[0]
         p1 = subprocess.Popen(
             base64.b64decode(PM_PATH)
                 .decode()
                 .format(
                 adb_path=self.adb_path,
-                package_name=package_name,
+                package_name=package,
                 device=self.device
             ),
             stdout=subprocess.PIPE
@@ -1493,16 +1560,80 @@ class AppPackage(InitBase):
         return output.decode()
 
 
-    # ====================================
+    # --------------------------------
 
 
-# class Resource(InitBase):
-#     """
-#     用于处理系统资源
-#     """
-#     def __init__(self,device_id,driver="main"):
-#         super(Resource, self).__init__(device_id,driver=driver)
-#
+class Resource(InitBase):
+    """
+    用于处理系统资源
+    """
+    def __init__(self,device_id,driver="main"):
+        super(Resource, self).__init__(device_id,driver=driver)
+
+
+    @property
+    def process(self):
+        """
+        获取后台进程,
+        :param pname:
+        :return:
+        """
+        return Process(adb_path=self.adb_path,device=self.device)
+
+
+
+
+class Process:
+
+    def __init__(self,adb_path,device):
+        self.adb_path = adb_path
+        self.device = device
+
+
+    def all(self):
+
+        p1 = subprocess.Popen(
+            base64.b64decode(GET_PROCESS_ALL)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                device=self.device
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p1.communicate()[0].decode()
+        return output
+
+
+
+
+    def package(self,name):
+        if name:
+            package = name
+        else:
+            package = ''
+        p1 = subprocess.Popen(
+            base64.b64decode(GET_PROCESS)
+                .decode()
+                .format(
+                adb_path=self.adb_path,
+                findstr=package,
+                device=self.device
+            ),
+            stdout=subprocess.PIPE
+        )
+        output = p1.communicate()[0].decode()
+        dt = []
+        xf = [x.rstrip() for s in output.split('\n') for x in s.split(" ") if x !='']
+        current = 0
+        for xd in range(len(xf)//9):
+            xd+=1
+            dt.extend([xf[current:xd*9]])
+            current += 9
+        return None if len(dt) > 1 else dt[0]
+
+
+# adb shell uiautomator dump
 #     def app_cpu(self,package):
 #         # package_cpu = f"{self.adb_path} shell "
 #         # package_cpus = f"{self.adb_path} -s {self.device} top -d 1 | grep {package}"

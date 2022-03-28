@@ -70,6 +70,14 @@ class CoordElementException(ElementLocalizationException):
         ElementLocalizationException.__init__(self, msg)
 
 
+class PackageNotException(ElementLocalizationException):
+    """
+    包不存在
+    """
+    def __init__(self, msg):
+        ElementLocalizationException.__init__(self, msg)
+
+
 
 class PackageInfoException(Exception):
     """

@@ -9,7 +9,7 @@ import re
 import subprocess
 
 
-from uiapp.common._exception import (
+from src.uiapp.common._exception import (
     TextElementException, IDElementException, ClassElementException, CoordElementException
 )
 
@@ -121,7 +121,7 @@ class ElementBase(InitBase):
 
 
 
-    def element_by_text(self,text):
+    def _element_by_text(self,text):
         """
 
         :param text:
@@ -167,7 +167,6 @@ class ElementBase(InitBase):
             attrib="resource-id", name=id
         )
 
-
         if ele[0] is None:
             raise IDElementException(msg="元素无法定位到")
         else:
@@ -202,7 +201,7 @@ class ElementBase(InitBase):
             attrib="text", name=text
         )
         ele_object_list = []
-        ev = [ele_object_list.append(Event(device=self.devices,el=tuple(x[0]),text=x[1]["text"])) for x in ele]
+        [ele_object_list.append(Event(device=self.devices,el=tuple(x[0]),text=x[1]["text"])) for x in ele]
         if ele is None:
             raise TextElementException(msg="元素无法定位到")
         else:
@@ -221,7 +220,7 @@ class ElementBase(InitBase):
             attrib="class", name=classname
         )
         ele_object_list = []
-        ev = [ele_object_list.append(
+        [ele_object_list.append(
             Event(device=self.devices,el=tuple(x[0]),text=x[1]["text"])
         ) for x in ele]
         if ele is None:
