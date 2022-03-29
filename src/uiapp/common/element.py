@@ -8,9 +8,10 @@ import base64
 import re
 import subprocess
 
+from lxml import etree
 
 from src.uiapp.common._exception import (
-    TextElementException, IDElementException, ClassElementException, CoordElementException
+    TextElementException, IDElementException, ClassElementException, CoordElementException, PathElementException
 )
 
 from src.uiapp.core.license import *
@@ -52,7 +53,7 @@ class ElementBase(InitBase):
         self.contentdesc = None
 
 
-
+    #
     def __element(self,attrib,name):
         """
 
@@ -82,8 +83,6 @@ class ElementBase(InitBase):
                 self.text = x.attrib["text"]
                 continue
         return self.pos_x, self.pos_y
-
-
 
     def __elements(self,attrib,name):
         """
@@ -118,8 +117,25 @@ class ElementBase(InitBase):
                 }])
         return current_elements
 
-
-
+    def __element_xpath(self,ele,index=0):
+        base_init_(device=self.devices)
+        html = etree.parse(r'D:\ui\uiapp.xml')
+        current_ele = html.xpath(ele)
+        if current_ele:
+            result = etree.tostring(current_ele[index], encoding="unicode", pretty_print=True, method="html")
+            html_element = etree.HTML(result)
+            xp = html_element.xpath("//@bounds")[0]
+            self.text = html_element.xpath("//@text")[0]
+            self.package = html_element.xpath("//@package")[0]
+            self.contentdesc = html_element.xpath("//@content-desc")[0]
+            self.index = html_element.xpath("//@index")[0]
+            pattern = re.compile(r"\d+")  # 组合成一维数组
+            xx = pattern.findall(xp)
+            self.pos_x = (int(xx[2]) - int(xx[0])) / 2 + int(xx[0])
+            self.pos_y = (int(xx[3]) - int(xx[1])) / 2 + int(xx[1])
+            return self.pos_x, self.pos_y
+        else:
+            raise PathElementException("未定位到元素")
 
     def _element_by_text(self,text):
         """
@@ -142,7 +158,6 @@ class ElementBase(InitBase):
                     return Event(device=self.devices,el=tuple(x),text=self.text)
                 res += 1
 
-
     def element_by_coord(self,x,y):
         """
         坐标
@@ -156,6 +171,11 @@ class ElementBase(InitBase):
             raise CoordElementException(msg="元素无法定位到")
         return Event(device=self.devices,el=tuple(ele))
 
+    def element_by_xpath(self,ele):
+        xp = self.__element_xpath(ele=ele)
+        if xp is None:
+            raise PathElementException(msg="元素无法定位到")
+        return Event(device=self.devices,el=tuple(xp))
 
     def element_by_id(self,id):
         """

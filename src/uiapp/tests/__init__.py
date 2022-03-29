@@ -16,21 +16,23 @@ app = start()
 # # 清理应用程序的缓存及数据
 # print(app.current_package_info())
 # # 启动app
-app.run('com.jideos.jnotes', 'com.jideos.module_main.pad.ui.activity.NoteListActivity')
-
+# app.run('com.jideos.jnotes', 'com.jideos.module_main.pad.ui.activity.NoteListActivity')
+app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity')
+print(app.element_by_xpath('//*[@resource-id="com.example.jideailicense:id/tv_content"]').click())
+# print(app.element_by_xpath('//*[@resource-id="com.example.jideailicense:id/tv_content"]').click())
 # 使用文本元素定位
 # app.element_by_text(text="QQ音乐HD")
 # 使用resourceId元素定位
-app.element_by_id(id="com.jideos.jnotes:id/add_note").text()
-# 采用坐标定位
-app.element_by_coord(487,1165).index()
-# 使用className元素定位
-app.element_by_class("android.widget.RadioButton").click()
-
-# 使用文本元素定位一组控件
-app.elements_by_text("QQ音乐HD")
-# 使用className元素定位一组控件
-app.elements_by_class("android.widget.RadioButton")
+# app.element_by_id(id="com.jideos.jnotes:id/add_note").text()
+# # 采用坐标定位
+# app.element_by_coord(487,1165).index()
+# # 使用className元素定位
+# app.element_by_class("android.widget.RadioButton").click()
+#
+# # 使用文本元素定位一组控件
+# app.elements_by_text("QQ音乐HD")
+# # 使用className元素定位一组控件
+# app.elements_by_class("android.widget.RadioButton")
 
 
 # 退出应用程序
@@ -59,7 +61,7 @@ app.elements_by_class("android.widget.RadioButton")
 # print(app.product_name())
 
 
-# print(app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity'))
+# print()
 # print(app.run('com.example.jideailicense', 'com.example.jideailicense.MainActivity'))
 # app.slide_to_unlock()
 # app.element_by_id(id="com.ss.android.article.news:id/a1x").click()

@@ -52,6 +52,14 @@ class ClassElementException(ElementLocalizationException):
         ElementLocalizationException.__init__(self, msg)
 
 
+class PathElementException(ElementLocalizationException):
+    """
+    Path定位异常
+    """
+    def __init__(self, msg):
+        ElementLocalizationException.__init__(self, msg)
+
+
 class NotMethodException(ElementLocalizationException):
     """
     没有该类型的定位方法
