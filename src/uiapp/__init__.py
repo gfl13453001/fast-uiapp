@@ -8,25 +8,25 @@
 name = "uiapp"
 
 __all__ = [
-    "ElementBase","Event","UiInit","start","ChainedElement","InitBase","Devices","_AdbActivity",
+    "ElementBase","Event","UiInit","start","InitBase","Devices","_AdbActivity",
     "TextElementException"
 ]
 
 
-from src.uiapp.driver.app import (
-    start,ChainedElement
+from uiapp.driver.app import (
+    start
 )
 
 
-from src.uiapp.common.element import (
+from uiapp.common.element import (
     ElementBase,Event,UiInit
 )
 
-from src.uiapp.common._exception import (
+from uiapp.common._exception import (
     TextElementException,
 )
 
-from src.uiapp.driver.android import (
+from uiapp.driver.android import (
     _AdbActivity, Devices, AppPackage,InitBase,
 )
 

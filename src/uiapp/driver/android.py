@@ -11,12 +11,9 @@ import time
 import os
 import sys
 
-from src.uiapp.common._exception import PackageNotException
-from src.uiapp.core.keycode import KeyCode
-from src.uiapp.core.license import *
-from src.uiapp.driver.monkey import MonkeyEvent
-
-
+from uiapp.common._exception import PackageNotException
+from uiapp.core.keycode import KeyCode
+from uiapp.core.license import *
 
 class InitBase(object):
     """
@@ -97,7 +94,6 @@ class InitBase(object):
             device=self.device,
             dump_file=self.dump_file
         )
-        print(shell)
         subprocess.Popen(shell).wait()
 
     def __rm_appui(self):
@@ -212,7 +208,6 @@ class InitBase(object):
             ), stdout=subprocess.PIPE).wait()
         return InitBase
 
-
 class SVC(InitBase):
     def __init__(self,device,driver="main"):
         super(SVC, self).__init__(device, driver=driver)
@@ -221,14 +216,6 @@ class SVC(InitBase):
     def power(self):
         return Power(driver=self.adb_path,device=self.device)
 
-# svc power stayon [true|false|usb|ac|wireless]
-# 设置保持唤醒状态
-# 设置电源常亮
-# 设置电源在usb情况下常亮
-# 设置电源在充电时常亮
-# 设置无线充电下常亮
-# 清除所有设置
-# http://www.codingtrip.com/2016/06/22/0011-adb-shell-svc/
 class Power:
     def __init__(self,device,driver="main"):
         self.device = device
@@ -256,8 +243,6 @@ class Power:
                 adb_path=self.driver,
                 driver=self.device,
             ), stdout=subprocess.PIPE, shell=True)
-
-
 
 class Devices(InitBase):
     def __init__(self,device,driver="main"):
@@ -363,39 +348,6 @@ class Devices(InitBase):
         :return:
         """
         return InputMethodBase(self.device,self.adb_path)
-
-    @property
-    def date(self):
-        """
-        :return:
-        """
-        device = self.device
-        driver = self.adb_path
-
-        class at:
-            """
-            星期几
-            月
-            日期
-            时间
-            时间区域
-            年
-            """
-
-            def get_date(self):
-                if device is None:
-                    get_content = None
-
-                    size_shell = f"{driver}  shell date"
-                else:
-                    size_shell = f"{driver} -s {device} date"
-
-                xt = subprocess.Popen(size_shell, stdout=subprocess.PIPE, shell=True)
-                get_content = xt.stdout.read().decode()
-                xp = get_content.replace("\r\n","").split(" ")
-                return xp
-
-        return at()
 
     def shaker(self):
         """
@@ -615,25 +567,6 @@ class Devices(InitBase):
 
         return output
 
-    # def mac_address(self):
-    #     """
-    #     查看mac地址
-    #     :return:
-    #     """
-    #     p2 = subprocess.Popen(
-    #         base64.b64decode(CAT_MAC_ADDRESS)
-    #             .decode()
-    #             .format(
-    #             adb_path=self.adb_path,
-    #             device=self.device
-    #         ),
-    #         stdout=subprocess.PIPE
-    #     )
-    #     output = p2.communicate()[0]
-    #
-    #     return output.decode()
-
-
     def cpu_info(self):
         """
         查看cpu 信息
@@ -652,39 +585,6 @@ class Devices(InitBase):
         output = p2.communicate()[0]
 
         return output.decode()
-
-
-
-    def meminfo(self):
-        """
-        查看内存信息
-        :return:
-        """
-
-        meminfo = f"{self.adb_path} shell cat /proc/meminfo"
-        meminfos = f""
-
-        # 查看内存信息
-        MEMINFO = b'{adb_path} {device} shell cat /proc/meminfo'
-
-        if self.device is None:
-
-            p1 = subprocess.Popen(
-                meminfo,
-                stdout=subprocess.PIPE
-            )
-            output = p1.communicate()[0]
-
-        else:
-
-            p2 = subprocess.Popen(
-                meminfos,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
-
-        return output.decode()
-
 
 # ------------------------------------
 class InputMethodBase:
@@ -736,12 +636,6 @@ class InputMethodBase:
         获取系统安装的输入法
         :return:
         """
-        print(base64.b64decode(GET_ALL_LIST_IME)
-                .decode()
-                .format(
-                driver=self.driver,
-                device=self.device
-            ))
         info_list =  subprocess.Popen(
             base64.b64decode(GET_ALL_LIST_IME)
                 .decode()
@@ -759,13 +653,6 @@ class InputMethodBase:
         设置指定的输入法
         :return:
         """
-        print(base64.b64decode(SET_KEY_PACKAGE)
-                .decode()
-                .format(
-                adb_app=self.driver,
-                device=self.device,
-                package=packagename
-            ),)
         subprocess.Popen(
             base64.b64decode(SET_KEY_PACKAGE)
                 .decode()
@@ -776,9 +663,7 @@ class InputMethodBase:
             ),
         stdout=subprocess.PIPE).wait()
 # ------------------------------------
-
 device_ = Devices
-
 
 class NetStat(InitBase):
     """
@@ -795,7 +680,6 @@ class NetStat(InitBase):
     @property
     def netstat(self):
         return BaseNetStat(device=self.device,driver=self.adb_path)
-
 
 class BaseNetStat:
     def __init__(self,device, driver):
@@ -829,92 +713,6 @@ class BaseNetStat:
         )
         return p2.communicate()[0].decode()
 
-
-
-
-monkey_event = MonkeyEvent
-class Monkey(InitBase):
-
-    def __init__(self, device_id, driver="main"):
-        """
-
-        :param devices:
-        :param driver:
-        """
-        super(Monkey, self).__init__(device_id, driver=driver)
-
-        self.monkey_shell =  "monkey -p"
-
-
-    def verbosity(self,level=1):
-        if level == 2:
-            self.monkey_shell += " -v -v "
-        elif level == 3:
-            self.monkey_shell += "-v -v -v "
-        else:
-            self.monkey_shell += "-v "
-        return self
-
-    def package_name(self,name):
-        self.monkey_shell += f" {name} "
-        return self
-
-
-    def event(self,count,event_option=monkey_event.RANDOM):
-
-        current_event = ""
-        if isinstance(event_option,dict):
-            for e in event_option:
-                current_event += f"--{e} {event_option[e]} "
-
-        else:
-            if event_option == monkey_event.RANDOM:
-                self.monkey_shell += f"{str(count)} "
-        self.monkey_shell += f"{current_event} {str(count)} "
-        return self
-
-    def seed(self,s):
-        self.monkey_shell += f"-s {s} "
-        return self
-
-    def throttle(self,t):
-        self.monkey_shell += f"--throttle {t} "
-        return self
-
-    def runner(self):
-
-
-        get_version_shell = f"{self.adb_path} shell {self.monkey_shell} "
-
-        get_version_shell_s = f"{self.adb_path} -s {self.device} shell {self.monkey_shell}"
-
-
-        if self.device is None:
-
-            # if log_save:
-
-                p1 = subprocess.Popen(
-                    get_version_shell,
-                    stdout=subprocess.PIPE
-                )
-                output = p1.communicate()[0]
-            # else:
-
-
-        else:
-
-            p2 = subprocess.Popen(
-                get_version_shell_s,
-                stdout=subprocess.PIPE
-            )
-            output = p2.communicate()[0]
-
-        return output.decode()
-
-
-
-
-
 class _AdbActivity(InitBase):
     """
 
@@ -927,9 +725,6 @@ class _AdbActivity(InitBase):
         :param driver:
         """
         super(_AdbActivity, self).__init__(device,driver=driver)
-
-
-
 
     def port(self,port=5555):
         """
@@ -1095,7 +890,6 @@ class _AdbActivity(InitBase):
             reboot = f"{self.adb_path}  -s {self.device} reboot"
         return subprocess.Popen(reboot)
 
-
 class Uninstall:
     def __init__(self, device,driver=None):
         self.device = device
@@ -1228,11 +1022,8 @@ class Install:
             shell=True
         ).communicate()[0]
 
-
 key_code = KeyCode()
 
-# 键盘操作
-# https://blog.csdn.net/jlminghui/article/details/39268419
 class KeyboardOperation:
     def __init__(self, device, driver="main"):
         self.device = device
@@ -1363,7 +1154,6 @@ class KeyboardOperation:
         )
         return self.back
 
-# https://www.jianshu.com/p/9123cc89e9f3
 class AppPackage(InitBase):
 
     def __init__(self,device,driver="main"):
@@ -1634,7 +1424,6 @@ class AppPackage(InitBase):
 
     # --------------------------------
 
-
 class Resource(InitBase):
     """
     用于处理系统资源
@@ -1652,10 +1441,10 @@ class Resource(InitBase):
         """
         return Process(adb_path=self.adb_path,device=self.device)
 
-
-
-
 class Process:
+    """
+
+    """
 
     def __init__(self,adb_path,device):
         self.adb_path = adb_path
@@ -1663,6 +1452,10 @@ class Process:
 
 
     def all(self):
+        """
+
+        :return:
+        """
 
         p1 = subprocess.Popen(
             base64.b64decode(GET_PROCESS_ALL)
@@ -1676,14 +1469,18 @@ class Process:
         output = p1.communicate()[0].decode()
         return output
 
-
-
-
     def package(self,name):
+        """
+
+        :param name:
+        :return:
+        """
+
         if name:
             package = name
         else:
             package = ''
+
         p1 = subprocess.Popen(
             base64.b64decode(GET_PROCESS)
                 .decode()
@@ -1702,107 +1499,5 @@ class Process:
             xd+=1
             dt.extend([xf[current:xd*9]])
             current += 9
+
         return None if len(dt) > 1 else dt[0]
-
-
-# adb shell uiautomator dump
-#     def app_cpu(self,package):
-#         # package_cpu = f"{self.adb_path} shell "
-#         # package_cpus = f"{self.adb_path} -s {self.device} top -d 1 | grep {package}"
-#         join_shell = f"{self.adb_path} shell top -d 1 | grep '{package}'"
-#         join_shell_s = f"{self.adb_path} -s {self.device} shell"
-#
-#         if self.device is None:
-#
-#
-#             p1 = subprocess.Popen(
-#                 join_shell,
-#
-#                 stdout=subprocess.PIPE
-#             )
-#             output = p1.communicate()[0]
-#
-#
-#         else:
-#             j = subprocess.Popen(
-#                 join_shell_s,
-#                 stdout=subprocess.PIPE
-#             )
-#
-#             p2 = subprocess.Popen(
-#                 f"top -d 1 | grep {package}",
-#                 stdout=subprocess.PIPE
-#             )
-#             output = p2.communicate()[0]
-#
-#         return output.decode()
-#     def app_ps(self,package):
-#         package_cpu = f"{self.adb_path} shell  ps |grep '{package}'"
-#         package_cpus = f"{self.adb_path} -s {self.device} shell ps |findstr '{package}'"
-#
-#         if self.device is None:
-#
-#
-#             p1 = subprocess.Popen(
-#                 package_cpu,
-#                 stdout=subprocess.PIPE
-#             )
-#             output = p1.communicate()[0]
-#
-#         else:
-#
-#             p2 = subprocess.Popen(
-#                 package_cpus,
-#                 stdout=subprocess.PIPE
-#             )
-#             output = p2.communicate()[0]
-#
-#         return output.decode()
-#     def top(self,package):
-#         package_cpu = f"{self.adb_path} shell top"
-#         # package_cpus = f"{self.adb_path} -s {self.device} shell ps |findstr '{package}'"
-#
-#         if self.device is None:
-#
-#
-#             p1 = subprocess.Popen(
-#                 package_cpu,
-#                 stdout=subprocess.PIPE,
-#             )
-#             output = p1.stdout.read()
-#
-#         else:
-#
-#             p2 = subprocess.Popen(
-#                 package_cpus,
-#                 stdout=subprocess.PIPE
-#             )
-#             output = p2.communicate()[0]
-#
-#         return output
-#     def pm_meminfo(self):
-#         """
-#         查看内存信息
-#         :return:
-#         """
-#
-#         p1 = subprocess.Popen(
-#             base64.b64decode(CAT_MEMINFO)
-#                 .decode()
-#                 .format(
-#                 adb_path=self.adb_path,
-#                 device=self.device,
-#             ),
-#             stdout=subprocess.PIPE
-#         )
-#         output = p1.communicate()[0]
-#         return output.decode()
-#
-
-
-
-# dumpsys meminfo com.jideos.jnotes
-#  adb shell top -n 1| findstr
-# adb shell top -n 10 |findstr com.jideos.jnotes
-# 第一行表示：com.ifeng.news2这个应用cpu占用率为69%，这个过程是在用户（user）中花26%的时间，并在内核空间（kernel）花费43%的时间
-#

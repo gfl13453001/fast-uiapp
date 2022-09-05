@@ -7,21 +7,21 @@
 import base64
 import re
 import subprocess
-
+from typing import List, Tuple, Union
 from lxml import etree
 
-from src.uiapp.common._exception import (
+from uiapp.common._exception import (
     TextElementException, IDElementException, ClassElementException, CoordElementException, PathElementException
 )
 
-from src.uiapp.core.license import *
+from uiapp.core.license import *
 
 try:
     import xml.etree.cElementTree as ET
 except ImportError:
     import xml.etree.ElementTree as ET
 
-from src.uiapp.driver.android import InitBase
+from uiapp.driver.android import InitBase
 
 
 class UiInit(InitBase):
@@ -117,7 +117,7 @@ class ElementBase(InitBase):
                 }])
         return current_elements
 
-    def __element_xpath(self,ele,index=0):
+    def __element_xpath(self,ele,index:int=0) -> tuple:
         base_init_(device=self.devices)
         html = etree.parse(r'D:\ui\uiapp.xml')
         current_ele = html.xpath(ele)
@@ -143,7 +143,7 @@ class ElementBase(InitBase):
         :param text:
         :return:
         """
-        res = 0
+        res:int = 0
         x = self.__element(
             attrib="text", name=text
         )
@@ -177,11 +177,11 @@ class ElementBase(InitBase):
             raise PathElementException(msg="元素无法定位到")
         return Event(device=self.devices,el=tuple(xp))
 
-    def element_by_id(self,id):
+    def element_by_id(self,id:Union[int, str, float]) -> object:
         """
 
         :param id:
-        :return:
+        :return:object
         """
         ele = self.__element(
             attrib="resource-id", name=id
@@ -285,7 +285,7 @@ class Event(InitBase):
 
 
 
-    def text(self):
+    def text(self) -> str:
         """
         获取文本
         :return:
@@ -293,13 +293,24 @@ class Event(InitBase):
         return self.context
 
     def description(self):
+        """
+
+        :return:
+        """
         return self.des
 
-
     def index(self):
+        """
+
+        :return:
+        """
         return self.index
 
     def package(self):
+        """
+
+        :return:
+        """
         return self.package
 
     def __touch(self,dx, dy):
@@ -351,12 +362,20 @@ class Event(InitBase):
         :return:
         """
         if sx is None and sy is None:
-            self.__swipe(startX=self.el[0], startY=self.el[1], endX=ex, endY=ey, timeToSwipe=timeout)
+            self.__swipe(
+                startX=self.el[0], startY=self.el[1],
+                endX=ex, endY=ey,
+                timeToSwipe=timeout
+            )
         else:
-            self.__swipe(startX=sx, startY=sy, endX=ex, endY=ey, timeToSwipe=timeout)
+            self.__swipe(
+                startX=sx, startY=sy,
+                endX=ex, endY=ey,
+                timeToSwipe=timeout
+            )
         return Event.slide
 
-    def click(self):
+    def click(self) -> object:
         """
         点击
         :return:
@@ -364,13 +383,13 @@ class Event(InitBase):
         self.__touch(dx=self.el[0],dy=self.el[1])
         return Event.click
 
-    def value(self,val):
+    def value(self,val) -> object:
         """
         当前焦点控件进行输入文本内容
         usage: touch(500, 500)
         """
 
-        return subprocess.Popen(
+        subprocess.Popen(
             base64.b64decode(SEND_KEYS_VAL)
                 .decode()
                 .format(
@@ -379,4 +398,5 @@ class Event(InitBase):
                 val=val
             )
         )
+        return Event.value
 
